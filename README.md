@@ -12,7 +12,7 @@ Einfache HTML-Seiten ohne Baukasten: Jede Seite ist eine eigene Datei und lässt
 |---|---|
 | `index.html` | Startseite (Deutsch) |
 | `tierpark/` | Seite „Tierpark Sonnenhügel“ mit Download und Installationsanleitung |
-| `tribora/` | Seite „Tribora – Vom Lagerfeuer zur Fabrik“ (noch „bald verfügbar“) |
+| `tribora/` | Seite „Tribora – Vom Lagerfeuer zur Fabrik“ mit Download und Installationsanleitung |
 | `datenschutz/`, `impressum/` | Datenschutzerklärung und Impressum |
 | `en/` | Dasselbe auf Englisch (`en/sunny-hill-zoo/`, `en/tribora/`, `en/privacy/`, `en/imprint/`) |
 | `assets/style.css` | Aussehen aller Seiten (Farben ganz oben änderbar) |
@@ -28,11 +28,12 @@ Einfache HTML-Seiten ohne Baukasten: Jede Seite ist eine eigene Datei und lässt
 
 ## Feste Adressen (nicht mehr ändern, sobald die App sie verwendet!)
 
-- Update-Datei: `https://pastfive.app/download/tierpark/version.json`
-- App-Datei:   `https://pastfive.app/download/tierpark/Tierpark.apk`
+- Tierpark Update-Datei: `https://pastfive.app/download/tierpark/version.json`
+- Tierpark App-Datei:   `https://pastfive.app/download/tierpark/Tierpark.apk`
+- Tribora App-Datei:    `https://pastfive.app/download/tribora/Tribora.apk`
 
-Diese zwei Dateien liegen **nicht** im Repo, sondern werden beim Veröffentlichen automatisch aus den
-Releases von `zoo-game` geholt – stündlich, mit Prüfung der App-Signatur (siehe ANLEITUNG-WEBSITE.md, Teil 3).
+Diese Dateien liegen **nicht** im Repo, sondern werden beim Veröffentlichen automatisch aus den
+Releases von `zoo-game` und `epochen-game` geholt – stündlich, mit Prüfung der App-Signatur (siehe ANLEITUNG-WEBSITE.md, Teil 3).
 
 ## Ehrlich-Etikett
 

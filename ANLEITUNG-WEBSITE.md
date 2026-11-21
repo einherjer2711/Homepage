@@ -83,29 +83,33 @@ GitHub-Einträgen oben.
 
 ## Teil 3 – Automatisch: neue App-Version → Website
 
-**So funktioniert es:** Einmal pro Stunde schaut die Website nach, ob es im Repo `zoo-game` eine neue Release gibt.
-Wenn ja, holt sie `Tierpark.apk` und `version.json`, **prüft, ob die APK mit deinem App-Schlüssel signiert ist**,
-und veröffentlicht beides unter `https://pastfive.app/download/tierpark/`. Die APK kommt dabei nie ins Repo.
-Eine neue App-Version ist also spätestens nach etwa einer Stunde auf der Website.
+**So funktioniert es:** Einmal pro Stunde schaut die Website nach, ob es in `zoo-game` (Tierpark) oder
+`epochen-game` (Tribora) eine neue Release gibt. Wenn ja, holt sie die APK, **prüft, ob sie mit dem richtigen
+App-Schlüssel signiert ist**, und veröffentlicht sie:
+
+- Tierpark: `https://pastfive.app/download/tierpark/Tierpark.apk` + `version.json` (für den Update-Check in der App)
+- Tribora: `https://pastfive.app/download/tribora/Tribora.apk` + `version.json` (wird automatisch erzeugt, für die Website)
+
+Die APKs kommen dabei nie ins Repo. Eine neue App-Version ist spätestens nach etwa einer Stunde auf der Website.
 
 **Einmalig einrichten – einen Lese-Schlüssel („Token“) anlegen:**
 
 1. GitHub → oben rechts Profilbild → **Settings** → ganz unten links **Developer settings** →
    **Personal access tokens** → **Fine-grained tokens** → **Generate new token**.
 2. Ausfüllen:
-   - **Token name:** `pastfive-website liest zoo-game`
+   - **Token name:** `pastfive-website liest Spiele`
    - **Expiration:** z. B. 1 Jahr (Datum im Kalender notieren – dann einfach neu anlegen)
-   - **Repository access:** **Only select repositories** → nur **zoo-game** auswählen
+   - **Repository access:** **Only select repositories** → **zoo-game** und **epochen-game** auswählen
    - **Permissions → Repository permissions → Contents:** **Read-only** (sonst nichts ändern)
 3. **Generate token** → den angezeigten Text (beginnt mit `github_pat_…`) kopieren. Er wird nur einmal angezeigt.
 4. Repo **Homepage** → **Settings** → **Secrets and variables** → **Actions** → **New repository secret**
-   - **Name:** `ZOO_GAME_TOKEN`
+   - **Name:** `GAMES_TOKEN`
    - **Secret:** den kopierten Text einfügen → **Add secret**
 5. **Actions** → „Website veröffentlichen“ → **Run workflow**. Nach 1–2 Minuten sollte
-   `https://pastfive.app/download/tierpark/version.json` im Browser die Versionsdaten zeigen.
+   `https://pastfive.app/download/tierpark/version.json` (und `…/tribora/version.json`) im Browser die Versionsdaten zeigen.
 
-**Warum ist das sicher?** Der Schlüssel kann nur `zoo-game` **lesen** – nichts ändern, nichts löschen, keine anderen
-Repos sehen. Er liegt verschlüsselt bei GitHub und taucht nie in einer Datei auf. Und selbst wenn jemand eine fremde
+**Warum ist das sicher?** Der Schlüssel kann nur die zwei Spiele-Repos **lesen** – nichts ändern, nichts löschen,
+keine anderen Repos sehen. Er liegt verschlüsselt bei GitHub und taucht nie in einer Datei auf. Und selbst wenn jemand eine fremde
 APK unterschieben wollte: Ohne deinen Signaturschlüssel wird sie nicht veröffentlicht.
 
 **Gut zu wissen:** GitHub pausiert stündliche Abläufe, wenn 60 Tage lang nichts im Repo passiert. Dann unter

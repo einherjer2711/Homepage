@@ -9,10 +9,10 @@ Ideen und Aufgaben, die vorgemerkt sind, aber noch warten können.
    am besten mit eigener Adresse wie `hallo@pastfive.app`.
 3. **Entstehungsnotiz beim Tierpark** – Vorschlag steht, bei Bedarf selbst anpassen.
 4. **Screenshots** vom Tierpark (4 Stück, Hochformat) statt der Platzhalter einfügen – echte Handy-Screenshots.
-5. **Lese-Token `ZOO_GAME_TOKEN` anlegen** (ANLEITUNG-WEBSITE.md, Teil 3) – danach läuft die Automatik.
+5. **Lese-Token `GAMES_TOKEN` anlegen** (ANLEITUNG-WEBSITE.md, Teil 3) – danach läuft die Automatik für beide Spiele.
 6. **Update-Adresse fest in die Zoo-App** eintragen – erst wenn Domain + Automatik laufen.
-7. **Tribora fertigstellen auf der Website:** echtes App-Symbol, Screenshots, Etikett ergänzen (Preis, Sprachen, Alter,
-   Android-Version), Download + Automatik wie beim Tierpark (eigener Ordner `download/tribora/`).
+7. **Tribora auf Englisch** (im Spiel) – danach Website-Hinweis „German only“ und Etikett anpassen.
+   Screenshots für Tribora (Querformat!) einfügen.
 8. **Neuigkeiten-Seite („Tagebuch“)** – kurze Einträge, was sich bei den Spielen tut. Erst später, wenn es mehr zu erzählen gibt.
 9. **Englische Neuerungen** beim Download: Die „Neu:“-Liste kommt aus der version.json und ist derzeit nur
     deutsch. Idee: in der version.json zusätzlich `notes_en` mitliefern.
@@ -28,8 +28,8 @@ Ideen und Aufgaben, die vorgemerkt sind, aber noch warten können.
 
 ## Erledigt
 
-- Automatik: neue Tierpark-Versionen kommen stündlich auf die Website, mit Signaturprüfung.
-- Tribora-Seite (DE/EN) mit Beschreibung, Entstehungsnotiz und vorläufigem Etikett.
+- Automatik: neue Versionen von Tierpark und Tribora kommen stündlich auf die Website, mit Signaturprüfung.
+- Tribora-Seite (DE/EN) mit echtem App-Symbol, Beschreibung, Entstehungsnotiz, Etikett (ab 12), Download.
 - Name **pastfive**, Slogan **just play** (DE + EN), Domain **pastfive.app**, Logo „Abendsonne“ (Variante A).
 - Website im neuen Stil: ruhig, modern, erwachsen; Startseite mit „Warum pastfive?“ und Versprechen;
   Tierpark-Seite mit Entstehungsnotiz, Ehrlich-Etikett, Download und Installationsanleitung;
