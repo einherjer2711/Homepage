@@ -4,16 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Sunny Hill Zoo – pastfive</title>
-<meta name="description" content="Sunny Hill Zoo: a cosy zoo-building game for Android. Free, no ads, no in-app purchases.">
-<link rel="icon" href="../../assets/tierpark/icon.png" type="image/png">
+<meta name="description" content="Sunny Hill Zoo: a cosy zoo-building game for Android. Free, no ads, no in-app purchases, no data collection.">
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
 <link rel="alternate" hreflang="de" href="../../tierpark/">
 <link rel="stylesheet" href="../../assets/style.css">
 </head>
 <body>
 <header class="top"><div class="wrap">
-  <a class="brand" href="../"><img src="../../assets/logo.svg" alt=""><span>past<b>five</b></span></a>
+  <a class="brand" href="../"><img src="../../assets/logo.svg" alt="">pastfive</a>
   <nav>
-    <a href="./" aria-current="page">Zoo</a>
+    <a href="../#games" aria-current="page">Games</a>
+    <a href="#download">Download</a>
     <a class="lang" href="../../tierpark/" hreflang="de" lang="de">DE</a>
   </nav>
 </div></header>
@@ -23,37 +24,57 @@
     <img src="../../assets/tierpark/icon.png" alt="Sunny Hill Zoo app icon">
     <div>
       <h1>Sunny Hill Zoo</h1>
-      <p>Your cosy zoo on a little island</p>
+      <p>Your own zoo on a little island</p>
     </div>
   </div>
 
-  <p>On Sunny Hill you build your very own zoo, step by step: lay out enclosures, draw paths, welcome new animals and keep your visitors happy. The nicer your zoo, the more stars it earns – and the more guests arrive. No time pressure, perfect for a relaxed round after dinner.</p>
+  <p class="lead">On Sunny Hill you build your zoo step by step: lay out enclosures, draw paths, welcome new animals and keep your visitors happy. The nicer the zoo, the more stars – and the more guests. No time pressure at all.</p>
+
+  <blockquote class="story">
+    <p>“My daughter loves building games. But in almost every one, after a short while the only way forward was paying real money. So I built her a zoo of her own – one where you can just play.”</p>
+    <cite>– How the zoo came to be</cite>
+  </blockquote>
+
+  <!-- Honest label: must always be true! Update it when the game changes. -->
+  <section class="label" aria-labelledby="label">
+    <h3 id="label">Honest label <small>pastfive</small></h3>
+    <dl>
+      <div><dt>Price</dt><dd>free</dd></div>
+      <div><dt>Ads</dt><dd>none</dd></div>
+      <div><dt>In-app purchases</dt><dd>none</dd></div>
+      <div><dt>Data collected</dt><dd>none</dd></div>
+      <div><dt>Play without internet</dt><dd>yes<small>Internet only for the update check (can be turned off)</small></dd></div>
+      <div><dt>Languages</dt><dd>English, German</dd></div>
+      <div><dt>Suitable for</dt><dd>ages 6+</dd></div>
+      <div><dt>Device</dt><dd>Android 7 or newer</dd></div>
+    </dl>
+  </section>
 
   <!-- Screenshots: see the German page for how to add images (same folder assets/tierpark/screens/). -->
+  <h2>A closer look</h2>
   <div class="shots" aria-label="Pictures from the game">
-    <figure><div class="ph">📸<br>Screenshot coming</div><figcaption>Your island</figcaption></figure>
-    <figure><div class="ph">📸<br>Screenshot coming</div><figcaption>Pet the animals</figcaption></figure>
-    <figure><div class="ph">📸<br>Screenshot coming</div><figcaption>Build and decorate</figcaption></figure>
-    <figure><div class="ph">📸<br>Screenshot coming</div><figcaption>Seasons</figcaption></figure>
+    <figure><div class="ph">Screenshot coming</div><figcaption>Your island</figcaption></figure>
+    <figure><div class="ph">Screenshot coming</div><figcaption>Animals up close</figcaption></figure>
+    <figure><div class="ph">Screenshot coming</div><figcaption>Build and decorate</figcaption></figure>
+    <figure><div class="ph">Screenshot coming</div><figcaption>Seasons</figcaption></figure>
   </div>
 
   <h2>What awaits you</h2>
   <ul class="features">
-    <li>🦒 <b>Lots of animals</b> – from foxes to giraffes, with males, females and breeding pairs</li>
-    <li>🦄 <b>Fable world</b> – with a little luck, even mythical creatures move in</li>
-    <li>🤲 <b>Petting</b> – every animal has its own face</li>
-    <li>🎡 <b>Attractions</b> – petting zoo, lookout tower, park railway and aquarium</li>
-    <li>🏗️ <b>Upgrades</b> – enlarge enclosures, improve stands, move and rotate everything for free</li>
-    <li>🍂 <b>Seasons</b> – with calm music matching the season and time of day</li>
-    <li>📷 <b>Photos &amp; certificate</b> – save lovely moments straight to your gallery</li>
-    <li>👆 <b>Easy start</b> – a pointing hand guides you through the first tasks</li>
-    <li>🌐 <b>English and German</b> – switch any time</li>
+    <li><b>Lots of animals</b>From foxes to giraffes – with males, females and breeding pairs.</li>
+    <li><b>Fable world</b>With a little luck, even mythical creatures move in.</li>
+    <li><b>Pet the animals</b>Every animal has its own face.</li>
+    <li><b>Attractions</b>Petting zoo, lookout tower, park railway and aquarium.</li>
+    <li><b>Upgrades</b>Enlarge enclosures, improve stands, move and rotate everything for free.</li>
+    <li><b>Seasons</b>With calm music matching the season and time of day.</li>
+    <li><b>Photos &amp; certificate</b>Save lovely moments straight to your gallery.</li>
+    <li><b>Easy start</b>A pointing hand guides you through the first tasks – can be turned off.</li>
   </ul>
 
   <section class="download" id="download" data-json="../../download/tierpark/version.json" data-lang="en">
     <h2>Free download</h2>
-    <p>For Android phones and tablets. No ads, no in-app purchases, no sign-up.</p>
-    <a class="btn off" href="#download">⬇️ Download the app (APK)</a>
+    <p>For Android phones and tablets. No sign-up.</p>
+    <a class="btn off" href="#download">Download the app (APK)</a>
     <div class="ver">Loading version …</div>
   </section>
 
@@ -63,19 +84,19 @@
     <li><b>Download:</b> Open this page on your phone and tap “Download the app” above. The file <i>Tierpark.apk</i> is saved.</li>
     <li><b>Open:</b> Tap the downloaded file (in the notification or in your “Downloads” folder).</li>
     <li><b>Allow:</b> The first time, Android asks whether your browser may install apps. Tap <i>Settings</i> → <i>Allow from this source</i>, then go back.</li>
-    <li><b>Install:</b> Tap <i>Install</i>. Done – the zoo is now with your other apps!</li>
+    <li><b>Install:</b> Tap <i>Install</i>. Done – the zoo is now with your other apps.</li>
   </ol>
-  <p class="note">💡 Google Play Protect may show “Unknown app” or “Unknown developer”. That's normal for apps from outside the Play Store – tap <i>More details</i> → <i>Install anyway</i>.</p>
+  <p class="note">Google Play Protect may show “Unknown app” or “Unknown developer”. That's normal for apps from outside the Play Store – tap <i>More details</i> → <i>Install anyway</i>.</p>
 
   <h2>Updates</h2>
   <p>At most once a day the app checks whether a new version is available and asks you. You can also check yourself: <i>☰ Menu → ℹ️ About the game · Updates → 🔄 Check for updates</i>. Simply install the new version over the old one – <b>your zoo is kept</b>.</p>
 
   <h2>Your progress</h2>
-  <p>Your progress is stored only on your phone. To back it up or move it to a new phone: <i>☰ Menu → 💾 Back up</i> (e.g. to Google Drive) and on the new phone <i>☰ Menu → 📂 Load</i>.</p>
+  <p>Your progress is stored only on your device. To back it up or move it to a new phone: <i>☰ Menu → 💾 Back up</i> (e.g. to Google Drive) and on the new phone <i>☰ Menu → 📂 Load</i>.</p>
 </main>
 
 <footer><div class="wrap">
-  <span class="grow">© 2026 pastfive</span>
+  <span class="grow"><img src="../../assets/favicon.svg" alt="">© 2026 pastfive</span>
   <a href="../privacy/">Privacy</a>
   <a href="../imprint/">Imprint</a>
   <a href="../../tierpark/" hreflang="de" lang="de">Deutsch</a>

@@ -1,7 +1,9 @@
 # Anleitung: Website online stellen
 
 Die Schritte sind so geschrieben, dass du sie der Reihe nach abhaken kannst.
-Wo `pastfive.fun` steht, setzt du die endgültige Domain ein.
+
+**Aufteilung:** Domain und E-Mail bei **domaintechnik.at**, die Website selbst auf **GitHub Pages** (gratis).
+Bei domaintechnik brauchst du dafür **kein Webspace-Paket** – Domain + DNS-Verwaltung (+ E-Mail, falls gewünscht) reicht.
 
 ---
 
@@ -21,24 +23,25 @@ oder Schlüssel – und die APK wird nicht ins Repo gelegt, sondern nur beim Ver
 
 ---
 
-## Teil 2 – Eigene Domain (z. B. pastfive.fun) mit HTTPS
+## Teil 2 – Eigene Domain (z. B. pastfive.app) mit HTTPS
 
 ### 2a. Domain bei GitHub „verifizieren“ (Schutz vor Missbrauch – empfohlen, einmalig)
 
 1. GitHub → oben rechts dein Profilbild → **Settings** (Konto, nicht Repo!) → links **Pages** →
-   **Add a domain** → `pastfive.fun` eingeben.
+   **Add a domain** → `pastfive.app` eingeben.
 2. GitHub zeigt einen **TXT-Eintrag** an, z. B. Name `_github-pages-challenge-einherjer2711`, Wert `abc123…`.
 3. Diesen TXT-Eintrag beim Domain-Anbieter anlegen (siehe 2b) → bei GitHub **Verify** drücken
    (kann ein paar Minuten bis Stunden dauern).
 
 ### 2b. DNS-Einträge beim Domain-Anbieter
 
-Beim Domain-Anbieter (z. B. World4You, easyname, Namecheap, Porkbun …) gibt es einen Bereich wie
-„DNS-Verwaltung“ / „DNS-Einstellungen“ / „Nameserver-Einträge“. Dort:
+Bei domaintechnik.at im Kundenbereich die Domain auswählen und die **DNS-Verwaltung** öffnen
+(Bezeichnung kann leicht abweichen, z. B. „DNS-Einträge“ oder „Zoneneditor“). Dort:
 
 1. **Alte Einträge entfernen**, die auf eine „Parkseite“ des Anbieters zeigen: alle **A**- und **AAAA**-Einträge
    für `@` (= die Domain selbst) sowie einen evtl. vorhandenen Eintrag für `www`.
-   ⚠️ **MX-Einträge (E-Mail) NICHT löschen**, falls du E-Mail über die Domain nutzt.
+   ⚠️ **MX-Einträge und alles, was mit E-Mail zu tun hat (z. B. `mail`, `autodiscover`, SPF-TXT), NICHT löschen** –
+   die E-Mail bleibt bei domaintechnik.
 2. **Neu anlegen** (Name `@` bedeutet die Domain ohne Vorsatz; manche Anbieter lassen das Feld dafür leer):
 
 | Typ   | Name  | Wert / Ziel                |
@@ -59,19 +62,22 @@ Beim Domain-Anbieter (z. B. World4You, easyname, Namecheap, Porkbun …) gibt es
 
 ### 2c. Domain im Repo eintragen und HTTPS einschalten
 
-1. Repo **Homepage** → **Settings → Pages** → **Custom domain**: `pastfive.fun` → **Save**.
+1. Repo **Homepage** → **Settings → Pages** → **Custom domain**: `pastfive.app` → **Save**.
 2. GitHub prüft die DNS-Einträge („DNS check successful“). Falls ein Fehler kommt: etwas warten und
    erneut „Check again“.
 3. Sobald GitHub das Zertifikat ausgestellt hat (bis zu ca. 1 Std.), Haken bei **Enforce HTTPS** setzen.
-   Ab dann läuft die Seite nur noch verschlüsselt: `https://pastfive.fun`. `www.pastfive.fun` leitet automatisch weiter.
+   **Besonderheit bei .app:** Die Endung erzwingt immer HTTPS. Bis GitHub das Zertifikat ausgestellt hat, zeigt der
+   Browser daher eine Fehlermeldung – das ist normal, einfach abwarten.
+   Ab dann läuft die Seite verschlüsselt: `https://pastfive.app`. `www.pastfive.app` leitet automatisch weiter.
 
-**Prüfen:** `https://pastfive.fun` und `https://www.pastfive.fun` im Handy-Browser öffnen – Schloss-Symbol muss da sein.
+**Prüfen:** `https://pastfive.app` und `https://www.pastfive.app` im Handy-Browser öffnen – Schloss-Symbol muss da sein.
 
 ### Optional: E-Mail-Adresse mit der Domain
 
-Für Impressum und Google Play ist eine eigene Adresse wie `hallo@pastfive.fun` praktisch (und schützt deine
-private Adresse). Viele Domain-Anbieter bieten dafür eine kostenlose **E-Mail-Weiterleitung** an deine
-bestehende Adresse an.
+Für Impressum und Google Play ist eine eigene Adresse wie `hallo@pastfive.app` praktisch (und schützt deine
+private Adresse). Das richtest du direkt bei domaintechnik ein – als eigenes Postfach oder als Weiterleitung an
+deine bestehende Adresse. Die E-Mail-Einträge legt domaintechnik dabei selbst an; sie vertragen sich mit den
+GitHub-Einträgen oben.
 
 ---
 
@@ -83,7 +89,7 @@ bestehende Adresse an.
 
 ## Teil 4 – Update-Adresse in der App
 
-Erst wenn Teil 2 und 3 laufen und `https://pastfive.fun/download/tierpark/version.json` im Browser
+Erst wenn Teil 2 und 3 laufen und `https://pastfive.app/download/tierpark/version.json` im Browser
 die Versionsdatei zeigt, wird diese Adresse fest in die App (`zoo-game`, `www/index.html`, `UPDATE_URL`) eingetragen.
 Alte, bereits installierte Apps ohne eingetragene Adresse: einmalig unter ⚙️ Einstellungen → „Update-Quelle“
 die Adresse einfügen – oder die neue Version einmal von Hand installieren.
@@ -102,7 +108,7 @@ die Adresse einfügen – oder die neue Version einmal von Hand installieren.
   Unternehmensgegenstand, Gewerbebehörde, UID-Nummer usw. dazu.
 - **Datenschutzerklärung (DSGVO):** nötig, weil beim Besuch technisch IP-Adressen verarbeitet werden (GitHub).
   Ist bereits vorbereitet.
-- **Google Play:** verlangt eine öffentlich erreichbare Datenschutzerklärung (→ `https://pastfive.fun/datenschutz/`)
+- **Google Play:** verlangt eine öffentlich erreichbare Datenschutzerklärung (→ `https://pastfive.app/datenschutz/`)
   und eine Kontakt-E-Mail. Bei Konten, die Geld verdienen, wird auch die Adresse öffentlich angezeigt.
 
 **Zu tun:** In `impressum/`, `datenschutz/` und den englischen Gegenstücken die rot markierten Platzhalter

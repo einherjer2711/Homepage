@@ -1,6 +1,9 @@
 # pastfive – Website
 
-Website für die Handyspiele (Arbeitstitel **pastfive** – „Spiele für den Feierabend / Games for after five“).
+Website des Spiele-Labels **pastfive** – *just play*. Domain: **pastfive.app**
+
+Leitgedanke: Spiele, die einfach Spiele sind – keine Werbung, keine Käufe im Spiel, keine Datensammlung, offline spielbar.
+
 Einfache HTML-Seiten ohne Baukasten: Jede Seite ist eine eigene Datei und lässt sich direkt im Browser öffnen.
 
 ## Was liegt wo?
@@ -12,7 +15,10 @@ Einfache HTML-Seiten ohne Baukasten: Jede Seite ist eine eigene Datei und lässt
 | `datenschutz/`, `impressum/` | Datenschutzerklärung und Impressum |
 | `en/` | Dasselbe auf Englisch (`en/sunny-hill-zoo/`, `en/privacy/`, `en/imprint/`) |
 | `assets/style.css` | Aussehen aller Seiten (Farben ganz oben änderbar) |
-| `assets/logo.svg` | Logo: Uhr auf fünf nach fünf |
+| `assets/logo.svg` | Logo „Abendsonne“: untergehende Sonne als Uhr auf fünf nach fünf |
+| `assets/favicon.svg` | vereinfachtes Logo für den Browser-Tab |
+| `assets/brand/` | Logo als Bild (1024 px) und Play-Store-Symbol (512 px, hell/dunkel) |
+| `assets/fonts/` | Schriften Outfit (Überschriften) und Manrope (Text), frei nutzbar |
 | `assets/tierpark/` | App-Symbol und (später) Screenshots |
 | `assets/download.js` | Zeigt beim Download-Knopf automatisch die aktuelle Version an |
 | `.github/workflows/pages.yml` | Veröffentlicht die Website automatisch bei jeder Änderung auf `main` |
@@ -21,11 +27,16 @@ Einfache HTML-Seiten ohne Baukasten: Jede Seite ist eine eigene Datei und lässt
 
 ## Feste Adressen (nicht mehr ändern, sobald die App sie verwendet!)
 
-- Update-Datei: `https://<domain>/download/tierpark/version.json`
-- App-Datei:   `https://<domain>/download/tierpark/Tierpark.apk`
+- Update-Datei: `https://pastfive.app/download/tierpark/version.json`
+- App-Datei:   `https://pastfive.app/download/tierpark/Tierpark.apk`
 
 Diese zwei Dateien liegen **nicht** im Repo, sondern werden beim Veröffentlichen automatisch aus den
 Releases von `zoo-game` geholt (siehe ANLEITUNG-WEBSITE.md, Teil 3 – wird erst nach Zustimmung eingerichtet).
+
+## Ehrlich-Etikett
+
+Jede Spielseite hat ein „Ehrlich-Etikett“ (Preis, Werbung, Käufe, Daten, Internet, Alter …).
+**Es muss immer stimmen** – wenn sich am Spiel etwas ändert, bitte dort mit anpassen.
 
 ## Screenshots einfügen
 
