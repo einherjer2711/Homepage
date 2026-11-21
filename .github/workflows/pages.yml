@@ -1,11 +1,25 @@
-# Veröffentlicht die Website automatisch auf GitHub Pages,
-# sobald sich etwas auf "main" ändert (oder per Knopf unter Actions → "Website veröffentlichen" → Run workflow).
+# Veröffentlicht die Website auf GitHub Pages – und legt dabei automatisch die neueste
+# Tierpark-App (Tierpark.apk + version.json) aus den Releases von "zoo-game" dazu.
+#
+# Wann läuft das?
+#   • bei jeder Änderung auf "main"
+#   • per Knopf: Actions → "Website veröffentlichen" → Run workflow
+#   • jede Stunde: prüft, ob es eine neue App-Version gibt (sonst passiert nichts)
+#
+# Benötigtes Secret (Settings → Secrets and variables → Actions):
+#   ZOO_GAME_TOKEN – Fine-grained Token, NUR für zoo-game, NUR "Contents: Read-only".
+#   Fehlt es, wird die Website trotzdem veröffentlicht – nur ohne App-Download.
+#
+# Sicherheit: Die APK wird nur übernommen, wenn sie mit DEINEM App-Schlüssel signiert ist.
+# Die APK landet nie im Repo, sondern nur in der veröffentlichten Website.
 name: Website veröffentlichen
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    - cron: '17 * * * *'
 
 permissions:
   contents: read
@@ -16,29 +30,84 @@ concurrency:
   group: pages
   cancel-in-progress: false
 
+env:
+  ZOO_REPO: einherjer2711/zoo-game
+  # Fingerabdruck des Tierpark-Schlüssels (öffentlich, kein Geheimnis) – derselbe wie in zoo-game
+  ZOO_KEY_SHA256: BD2D41872FA879A3C297350F5BEEF6ECE680C36CFEDF7BF5FBF6A6F07A230036
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/configure-pages@v5
+        id: pages
+
+      - name: Neueste App-Version suchen
+        id: zoo
+        env:
+          GH_TOKEN: ${{ secrets.ZOO_GAME_TOKEN }}
+          SITE: ${{ steps.pages.outputs.base_url }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::warning::Secret ZOO_GAME_TOKEN fehlt – die Website wird ohne App-Download veröffentlicht."
+            echo "have=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          TAG=$(gh release view --repo "$ZOO_REPO" --json tagName -q .tagName)
+          LIVE=$(curl -fsSL "$SITE/download/tierpark/version.json?t=$(date +%s)" 2>/dev/null | jq -r '.versionName // empty' 2>/dev/null || true)
+          echo "Neueste App-Version: $TAG · auf der Website: ${LIVE:-keine}"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "have=true" >> "$GITHUB_OUTPUT"
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "v$LIVE" = "$TAG" ]; then
+            echo "Nichts Neues – Website bleibt, wie sie ist."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Website zusammenstellen
+        if: steps.zoo.outputs.skip != 'true'
         run: |
           mkdir _site
           # alles außer Anleitungen (.md), Git- und Workflow-Dateien
           rsync -a --exclude '.git*' --exclude '_site' --exclude '*.md' ./ _site/
-          ls -R _site | head -50
 
-      - uses: actions/configure-pages@v5
+      - name: App-Dateien holen und prüfen
+        if: steps.zoo.outputs.skip != 'true' && steps.zoo.outputs.have == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.ZOO_GAME_TOKEN }}
+          TAG: ${{ steps.zoo.outputs.tag }}
+        run: |
+          D=_site/download/tierpark
+          mkdir -p "$D"
+          gh release download "$TAG" --repo "$ZOO_REPO" --pattern 'Tierpark.apk' --pattern 'version.json' --dir "$D"
+
+          # version.json muss gültig sein und zur Release passen
+          jq -e '(.versionCode|type=="number") and (.apk=="Tierpark.apk")' "$D/version.json" > /dev/null \
+            || { echo "::error::version.json ist ungültig."; exit 1; }
+          [ "v$(jq -r .versionName "$D/version.json")" = "$TAG" ] \
+            || { echo "::error::version.json passt nicht zu $TAG."; exit 1; }
+
+          # APK muss mit dem echten Tierpark-Schlüssel signiert sein
+          APKSIGNER=$(ls -d "$ANDROID_HOME"/build-tools/*/ | sort -V | tail -1)apksigner
+          GOT=$("$APKSIGNER" verify --print-certs "$D/Tierpark.apk" | grep -m1 'certificate SHA-256 digest' | awk '{print toupper($NF)}')
+          if [ "$GOT" != "$ZOO_KEY_SHA256" ]; then
+            echo "::error::Falsche Signatur ($GOT) – APK wird NICHT veröffentlicht."
+            exit 1
+          fi
+          echo "✔ $TAG übernommen, Signatur stimmt."
+          ls -la "$D"
 
       - uses: actions/upload-pages-artifact@v3
+        if: steps.zoo.outputs.skip != 'true'
         with:
           path: _site
 
       - name: Veröffentlichen
+        if: steps.zoo.outputs.skip != 'true'
         id: deployment
         uses: actions/deploy-pages@v4

@@ -83,7 +83,33 @@ GitHub-Einträgen oben.
 
 ## Teil 3 – Automatisch: neue App-Version → Website
 
-*(Vorschlag – wird erst nach deiner Zustimmung eingerichtet. Details stehen in Claudes Antwort.)*
+**So funktioniert es:** Einmal pro Stunde schaut die Website nach, ob es im Repo `zoo-game` eine neue Release gibt.
+Wenn ja, holt sie `Tierpark.apk` und `version.json`, **prüft, ob die APK mit deinem App-Schlüssel signiert ist**,
+und veröffentlicht beides unter `https://pastfive.app/download/tierpark/`. Die APK kommt dabei nie ins Repo.
+Eine neue App-Version ist also spätestens nach etwa einer Stunde auf der Website.
+
+**Einmalig einrichten – einen Lese-Schlüssel („Token“) anlegen:**
+
+1. GitHub → oben rechts Profilbild → **Settings** → ganz unten links **Developer settings** →
+   **Personal access tokens** → **Fine-grained tokens** → **Generate new token**.
+2. Ausfüllen:
+   - **Token name:** `pastfive-website liest zoo-game`
+   - **Expiration:** z. B. 1 Jahr (Datum im Kalender notieren – dann einfach neu anlegen)
+   - **Repository access:** **Only select repositories** → nur **zoo-game** auswählen
+   - **Permissions → Repository permissions → Contents:** **Read-only** (sonst nichts ändern)
+3. **Generate token** → den angezeigten Text (beginnt mit `github_pat_…`) kopieren. Er wird nur einmal angezeigt.
+4. Repo **Homepage** → **Settings** → **Secrets and variables** → **Actions** → **New repository secret**
+   - **Name:** `ZOO_GAME_TOKEN`
+   - **Secret:** den kopierten Text einfügen → **Add secret**
+5. **Actions** → „Website veröffentlichen“ → **Run workflow**. Nach 1–2 Minuten sollte
+   `https://pastfive.app/download/tierpark/version.json` im Browser die Versionsdaten zeigen.
+
+**Warum ist das sicher?** Der Schlüssel kann nur `zoo-game` **lesen** – nichts ändern, nichts löschen, keine anderen
+Repos sehen. Er liegt verschlüsselt bei GitHub und taucht nie in einer Datei auf. Und selbst wenn jemand eine fremde
+APK unterschieben wollte: Ohne deinen Signaturschlüssel wird sie nicht veröffentlicht.
+
+**Gut zu wissen:** GitHub pausiert stündliche Abläufe, wenn 60 Tage lang nichts im Repo passiert. Dann unter
+**Actions** einfach „Enable workflow“ drücken.
 
 ---
 
