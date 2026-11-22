@@ -131,6 +131,8 @@ a.card:hover{transform:translateY(-3px);border-color:var(--accent-2);color:var(-
 .download h2{margin-top:0}
 .btn{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:#fff;text-decoration:none;font:800 18px/1 Manrope,sans-serif;padding:16px 28px;border-radius:999px;transition:background .15s,transform .15s}
 .btn:hover{background:#e0661f;color:#fff;transform:translateY(-1px)}
+.cta{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin:22px 0 8px}
+.cta small{color:var(--mut);font-size:14px}
 .btn.off{background:#bdb6c6;pointer-events:none}
 .ver{color:var(--mut);font-size:15px;margin-top:16px}
 .ver ul{margin:.3em 0 0;padding-left:1.2em}

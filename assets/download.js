@@ -1,4 +1,5 @@
 // Liest die version.json des Spiels und zeigt Version, Datum und Neuerungen beim Download-Knopf an.
+// Der Knopf zeigt schon im HTML direkt auf die APK – das Skript ist nur die Zugabe (Versionsanzeige).
 // Verwendung: <div class="dl" data-json="../download/tierpark/version.json" data-lang="de"> … </div>
 (function () {
   document.querySelectorAll('[data-json]').forEach(async function (box) {
@@ -27,9 +28,8 @@
       }
       info.innerHTML = html;
     } catch (e) {
-      info.textContent = de
-        ? 'Der Download ist gerade noch nicht verfügbar – bitte schau bald wieder vorbei.'
-        : 'The download is not available yet – please check back soon.';
+      // Versionsanzeige nicht verfügbar – der Knopf zeigt trotzdem direkt auf die APK
+      info.textContent = '';
     }
   });
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
