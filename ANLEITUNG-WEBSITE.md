@@ -1,6 +1,8 @@
 # Anleitung: Website online stellen
 
-Die Schritte sind so geschrieben, dass du sie der Reihe nach abhaken kannst.
+> **Stand 22.11.2026: Alles eingerichtet ✅** – pastfive.app ist online (OVH-DNS, GitHub Pages, HTTPS),
+> Downloads, Bilder und Update-Datei kommen automatisch aus den Spiele-Repos.
+> Die Teile 0–4 unten dienen als Nachschlagewerk. Für den Alltag siehe **„Wartung“** ganz unten.
 
 **Aufteilung:** Domain und E-Mail bei **OVHcloud** (bei .app ist ein Postfach „Starter E-Mail“ dabei),
 die Website selbst auf **GitHub Pages** (gratis). Ein Webhosting-Paket brauchst du **nicht**.
@@ -25,8 +27,8 @@ Danach in der OVH-Verwaltung das Postfach `hello@pastfive.app` anlegen (Bereich 
 
 ## Teil 1 – GitHub Pages einschalten
 
-**Wichtig vorab:** Das Repo `Homepage` ist derzeit **privat**. GitHub Pages funktioniert bei einem kostenlosen
-GitHub-Konto nur mit **öffentlichen** Repos (sonst braucht man GitHub Pro, ca. 4 $/Monat).
+**Wichtig:** GitHub Pages funktioniert bei einem kostenlosen GitHub-Konto nur mit **öffentlichen** Repos
+(sonst braucht man GitHub Pro). Das Repo `Homepage` ist deshalb öffentlich.
 Für eine Website ist „öffentlich“ kein Problem: Die Seiten sieht ohnehin jeder. Im Repo liegen keine Passwörter
 oder Schlüssel – und die APK wird nicht ins Repo gelegt, sondern nur beim Veröffentlichen dazugepackt.
 
@@ -137,8 +139,8 @@ APK unterschieben wollte: Ohne deinen Signaturschlüssel wird sie nicht veröffe
 
 ## Teil 4 – Update-Adresse in der App
 
-Erst wenn Teil 2 und 3 laufen und `https://pastfive.app/download/tierpark/version.json` im Browser
-die Versionsdatei zeigt, wird diese Adresse fest in die App (`zoo-game`, `www/index.html`, `UPDATE_URL`) eingetragen.
+✅ Erledigt: Seit Tierpark 1.1.14 steht `https://pastfive.app/download/tierpark/version.json` fest in der App
+(`zoo-game`, `www/index.html`, `UPDATE_URL`).
 Alte, bereits installierte Apps ohne eingetragene Adresse: einmalig unter ⚙️ Einstellungen → „Update-Quelle“
 die Adresse einfügen – oder die neue Version einmal von Hand installieren.
 
@@ -159,7 +161,18 @@ die Adresse einfügen – oder die neue Version einmal von Hand installieren.
 - **Google Play:** verlangt eine öffentlich erreichbare Datenschutzerklärung (→ `https://pastfive.app/datenschutz/`)
   und eine Kontakt-E-Mail. Bei Konten, die Geld verdienen, wird auch die Adresse öffentlich angezeigt.
 
-**Zu tun:** In `impressum/`, `datenschutz/` und den englischen Gegenstücken die rot markierten Platzhalter
-`[Vor- und Nachname]`, `[Straße …]`, `[E-Mail-Adresse]` ausfüllen (oder Claude die Angaben geben).
-Wenn du deine Straße nicht veröffentlichen möchtest: Für die reine Offenlegung genügt der Ort; dann aber
-bewusst entscheiden (siehe ECG-Hinweis oben).
+✅ Erledigt: Name, Wohnort (ohne Straße) und hello@pastfive.app sind eingetragen. Sobald Geld ins Spiel kommt
+(Kaufpreis, Spenden), Impressum um die volle Anschrift ergänzen.
+
+---
+
+## Wartung – was ab und zu zu tun ist
+
+| Wann | Was |
+|---|---|
+| **Neue Spielversion** | Nichts. Die Website holt APK, Bilder und Versionsinfo selbst (stündlich bzw. bei jeder Website-Änderung). Eilt es: Repo Homepage → **Actions** → „Website veröffentlichen“ → **Run workflow**. |
+| **Lese-Schlüssel `GAMES_TOKEN` läuft ab** (Datum im Kalender!) | GitHub → Settings → Developer settings → Fine-grained tokens → **Regenerate** → neuen Text im Repo Homepage unter Settings → Secrets → Actions → `GAMES_TOKEN` → **Update** einfügen. Ohne gültigen Schlüssel kommen keine neuen Versionen mehr auf die Website (die alten bleiben). |
+| **Roter Lauf unter Actions** | Meist ein kurzer GitHub-Aussetzer → „Re-run jobs“. Sonst Claude das Protokoll ansehen lassen. |
+| **60 Tage keine Änderung im Repo** | GitHub pausiert die stündliche Prüfung → unter **Actions** „Enable workflow“ drücken. |
+| **Jährlich (November)** | OVH verlängert die Domain automatisch (ca. 21,49 €) – Zahlungsmittel aktuell halten. |
+| **Spiel ändert sich** (Preis, Internet, Sprachen, Alter) | **Ehrlich-Etikett** auf der Spielseite anpassen – und ggf. die Datenschutzerklärung. |
