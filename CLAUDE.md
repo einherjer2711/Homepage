@@ -13,7 +13,8 @@ Der Besitzer ist kein Programmierer: immer **Deutsch**, einfach erklären, vor g
 - **Pro Spiel:** Entstehungsnotiz, **Ehrlich-Etikett** (muss immer stimmen!), Screenshots, Download, Anleitung.
 - **Spiele:** Tierpark Sonnenhügel (`zoo-game`, ab 6, DE/EN, Update-Check) und Tribora (`epochen-game`, ab 12,
   DE/EN, kein Internet). Beide Android 7+.
-- **Automatik:** `.github/workflows/pages.yml` holt stündlich die neuesten APKs (Secret `GAMES_TOKEN`,
+- **Automatik:** `.github/workflows/pages.yml` wird von den Spiele-Releases angestoßen (Secret `HOMEPAGE_TOKEN` in
+  den Spiele-Repos; Stunden-Uhr nur Reserve, springt nicht zuverlässig an) und holt die neuesten APKs (Secret `GAMES_TOKEN`,
   nur Lesen), prüft die Signatur, veröffentlicht unter `download/tierpark/` und `download/tribora/`;
   Bildschirmfotos kommen ebenfalls aus den Releases (`screens/…`, als WebP verkleinert).
   Diese Adressen nie ändern – die Tierpark-App nutzt `download/tierpark/version.json` für den Update-Check.

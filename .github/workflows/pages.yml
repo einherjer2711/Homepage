@@ -6,7 +6,8 @@
 # Wann läuft das?
 #   • bei jeder Änderung auf "main"
 #   • per Knopf: Actions → "Website veröffentlichen" → Run workflow
-#   • jede Stunde: prüft, ob es eine neue App-Version gibt (sonst passiert nichts)
+#   • von den Spiele-Repos nach jedem Release (Sofort-Anstoß mit HOMEPAGE_TOKEN, siehe ANLEITUNG-WEBSITE.md 3b)
+#   • jede Stunde als Reserve: prüft, ob es eine neue App-Version gibt (sonst passiert nichts)
 #
 # Benötigtes Secret (Settings → Secrets and variables → Actions):
 #   GAMES_TOKEN – Fine-grained Token, NUR für zoo-game + epochen-game, NUR "Contents: Read-only".

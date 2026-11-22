@@ -137,6 +137,28 @@ APK unterschieben wollte: Ohne deinen Signaturschlüssel wird sie nicht veröffe
 
 ---
 
+### 3b. Sofort-Anstoß aus den Spiele-Repos (Website-Schlüssel `HOMEPAGE_TOKEN`)
+
+Die stündliche Prüfung von GitHub springt nicht zuverlässig an. Darum meldet jedes Spiel nach einem neuen Release
+**selbst**: „Website bitte neu veröffentlichen“. Dann ist die neue Version nach 1–2 Minuten auf pastfive.app.
+
+**Schlüssel anlegen (einmalig):**
+1. GitHub → Profilbild → **Settings** → **Developer settings** → **Personal access tokens** → **Fine-grained tokens**
+   → **Generate new token**.
+2. Ausfüllen:
+   - **Token name:** `Spiele stoßen Website an`
+   - **Expiration:** wie beim anderen Schlüssel (dann laufen beide gleichzeitig ab)
+   - **Repository access:** **Only select repositories** → **nur Homepage**
+   - **Permissions** → Reiter **Repositories** → **Add permissions** → **Actions** → **Read and write** (sonst nichts)
+3. **Generate token** → Text kopieren (nicht in einen Chat schicken).
+4. In **beiden** Spiele-Repos (zoo-game **und** epochen-game) jeweils: **Settings** → **Secrets and variables** →
+   **Actions** → **New repository secret** → Name `HOMEPAGE_TOKEN` → Text einfügen → **Add secret**.
+
+**Warum sicher?** Der Schlüssel gilt nur für das Repo Homepage und darf dort nur Abläufe starten – keine Dateien
+lesen oder ändern. Schlimmstenfalls könnte jemand damit die Website neu veröffentlichen lassen.
+
+---
+
 ## Teil 4 – Update-Adresse in der App
 
 ✅ Erledigt: Seit Tierpark 1.1.14 steht `https://pastfive.app/download/tierpark/version.json` fest in der App
@@ -170,8 +192,8 @@ die Adresse einfügen – oder die neue Version einmal von Hand installieren.
 
 | Wann | Was |
 |---|---|
-| **Neue Spielversion** | Nichts. Die Website holt APK, Bilder und Versionsinfo selbst (stündlich bzw. bei jeder Website-Änderung). Eilt es: Repo Homepage → **Actions** → „Website veröffentlichen“ → **Run workflow**. |
-| **Lese-Schlüssel `GAMES_TOKEN` läuft ab** – aktuell ca. **20.02.2027** (90 Tage; Erinnerung am 06.02.2027 ist gesetzt) | GitHub → Settings → Developer settings → Fine-grained tokens → **Regenerate** → neuen Text im Repo Homepage unter Settings → Secrets → Actions → `GAMES_TOKEN` → **Update** einfügen. Ohne gültigen Schlüssel kommen keine neuen Versionen mehr auf die Website (die alten bleiben). |
+| **Neue Spielversion** | Nichts. Das Spiel stößt die Website nach dem Release selbst an (Sofort-Anstoß, Teil 3b); zusätzlich bei jeder Website-Änderung. Eilt es: Repo Homepage → **Actions** → „Website veröffentlichen“ → **Run workflow**. |
+| **Schlüssel `GAMES_TOKEN` (im Repo Homepage) und `HOMEPAGE_TOKEN` (in beiden Spiele-Repos) laufen ab** – aktuell ca. **20.02.2027** (90 Tage; Erinnerung am 06.02.2027 ist gesetzt). `HOMEPAGE_TOKEN` genauso erneuern und in **beiden** Spiele-Repos aktualisieren. | GitHub → Settings → Developer settings → Fine-grained tokens → **Regenerate** → neuen Text im Repo Homepage unter Settings → Secrets → Actions → `GAMES_TOKEN` → **Update** einfügen. Ohne gültigen Schlüssel kommen keine neuen Versionen mehr auf die Website (die alten bleiben). |
 | **Roter Lauf unter Actions** | Meist ein kurzer GitHub-Aussetzer → „Re-run jobs“. Sonst Claude das Protokoll ansehen lassen. |
 | **60 Tage keine Änderung im Repo** | GitHub pausiert die stündliche Prüfung → unter **Actions** „Enable workflow“ drücken. |
 | **Jährlich (November)** | OVH verlängert die Domain automatisch (ca. 21,49 €) – Zahlungsmittel aktuell halten. |
