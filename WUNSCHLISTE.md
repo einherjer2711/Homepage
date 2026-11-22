@@ -6,7 +6,7 @@ Ideen und Aufgaben, die vorgemerkt sind, aber noch warten können.
 
 1. **Domain sichern** – pastfive.app bei OVHcloud (Domain + Starter E-Mail, Auto-Verlängerung an, 2FA), danach DNS laut ANLEITUNG-WEBSITE.md.
 2. **Impressum/Datenschutz ausfüllen** – Platzhalter für Name, Anschrift, E-Mail (rot markiert),
-   am besten mit eigener Adresse wie `hallo@pastfive.app`.
+   am besten mit eigener Adresse wie `hello@pastfive.app`.
 3. **Entstehungsnotiz beim Tierpark** – Vorschlag steht, bei Bedarf selbst anpassen.
 4. **Screenshots** vom Tierpark (4 Stück, Hochformat) statt der Platzhalter einfügen – echte Handy-Screenshots.
 5. **Lese-Token `GAMES_TOKEN` anlegen** (ANLEITUNG-WEBSITE.md, Teil 3) – danach läuft die Automatik für beide Spiele.

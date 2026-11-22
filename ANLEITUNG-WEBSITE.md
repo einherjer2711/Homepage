@@ -19,7 +19,7 @@ Beim Bestellen von `pastfive.app` darauf achten:
       Anschrift nicht öffentlich im Domain-Verzeichnis.
 - [ ] Nach der Bestellung im OVH-Konto die **Zwei-Faktor-Anmeldung** einschalten (Code am Handy).
 
-Danach in der OVH-Verwaltung das Postfach `hallo@pastfive.app` anlegen (Bereich **E-Mails**).
+Danach in der OVH-Verwaltung das Postfach `hello@pastfive.app` anlegen (Bereich **E-Mails**).
 
 ---
 
@@ -92,7 +92,7 @@ Dort gibt es **„Eintrag hinzufügen“** sowie bei jedem Eintrag rechts ein Me
 
 ### Optional: E-Mail-Adresse mit der Domain
 
-Für Impressum und Google Play ist eine eigene Adresse wie `hallo@pastfive.app` praktisch (und schützt deine
+Für Impressum und Google Play ist eine eigene Adresse wie `hello@pastfive.app` praktisch (und schützt deine
 private Adresse). Das Postfach ist bei OVH dabei (siehe Teil 0). Lesen und schreiben kannst du im Webmail von OVH
 oder in deinem gewohnten Mailprogramm; alternativ geht eine Weiterleitung an deine bestehende Adresse.
 Die E-Mail-Einträge legt OVH selbst an; sie vertragen sich mit den GitHub-Einträgen oben.
