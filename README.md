@@ -40,8 +40,9 @@ Releases von `zoo-game` und `epochen-game` geholt – stündlich, mit Prüfung d
 Jede Spielseite hat ein „Ehrlich-Etikett“ (Preis, Werbung, Käufe, Daten, Internet, Alter …).
 **Es muss immer stimmen** – wenn sich am Spiel etwas ändert, bitte dort mit anpassen.
 
-## Screenshots einfügen
+## Bildschirmfotos
 
-1. Screenshots am Handy machen (Hochformat), z. B. als `1.jpg` … `4.jpg` in `assets/tierpark/screens/` legen.
-2. In `tierpark/index.html` und `en/sunny-hill-zoo/index.html` jeweils `<div class="ph">…</div>` ersetzen durch
-   `<img src="../assets/tierpark/screens/1.jpg" alt="Kurze Beschreibung">` (englische Seite: `../../assets/…`).
+Kommen automatisch aus den Releases der Spiele (Tierpark: `screenshot-de|en-NN-name.png`,
+Tribora: `bild-de|en-NN-name.png`) und werden beim Veröffentlichen als WebP verkleinert nach `screens/…` gelegt.
+Welche Bilder auf den Spielseiten erscheinen, steht direkt im HTML der Spielseiten (Abschnitt „Einblicke“).
+Fehlt ein Bild im Release, verschwindet es auf der Seite einfach.

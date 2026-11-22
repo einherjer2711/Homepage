@@ -125,6 +125,8 @@ a.card:hover{transform:translateY(-3px);border-color:var(--accent-2);color:var(-
 .shots figure{margin:0;flex:0 0 min(220px,60vw);scroll-snap-align:start}
 .shots img,.shots .ph{width:100%;aspect-ratio:9/19.5;object-fit:cover;border-radius:22px;box-shadow:var(--shadow);border:5px solid var(--ink)}
 .shots .ph{background:linear-gradient(180deg,#f3ebdd,#e9e1d2);display:grid;place-items:center;text-align:center;color:var(--mut);font-size:14px;padding:10px}
+.shots.wide figure{flex-basis:min(440px,84vw)}
+.shots.wide img{aspect-ratio:auto;border-width:4px;border-radius:16px}
 .shots figcaption{text-align:center;font-size:14px;color:var(--mut);margin-top:8px}
 
 .download{background:var(--surface);border-radius:var(--radius);padding:30px;margin:44px 0;box-shadow:var(--shadow);border-top:5px solid var(--accent)}
