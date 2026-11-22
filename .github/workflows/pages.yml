@@ -45,7 +45,7 @@ jobs:
     timeout-minutes: 15
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deploy1.outputs.page_url || steps.deploy2.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
 
@@ -155,7 +155,19 @@ jobs:
         with:
           path: _site
 
+      # GitHub meldet manchmal direkt nach dem Hochladen „Paket nicht gefunden“ –
+      # dann kurz warten und ein zweites Mal versuchen.
       - name: Veröffentlichen
         if: steps.apps.outputs.skip != 'true'
-        id: deployment
+        id: deploy1
+        continue-on-error: true
+        uses: actions/deploy-pages@v4
+
+      - name: Kurz warten (nur falls der erste Versuch scheiterte)
+        if: steps.apps.outputs.skip != 'true' && steps.deploy1.outcome == 'failure'
+        run: sleep 30
+
+      - name: Veröffentlichen (zweiter Versuch)
+        if: steps.apps.outputs.skip != 'true' && steps.deploy1.outcome == 'failure'
+        id: deploy2
         uses: actions/deploy-pages@v4
