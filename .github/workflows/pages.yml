@@ -120,6 +120,36 @@ jobs:
             }' > "$D/version.json"
           cat "$D/version.json"
 
+      - name: Bildschirmfotos holen und verkleinern
+        # Bilder sind eine Zugabe: Fehlt etwas, wird die Website trotzdem veröffentlicht
+        # (auf der Seite verschwinden dann nur die fehlenden Bilder).
+        if: steps.apps.outputs.skip != 'true' && steps.apps.outputs.have == 'true'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GAMES_TOKEN }}
+          ZOO_TAG: ${{ steps.apps.outputs.zoo_tag }}
+          TRI_TAG: ${{ steps.apps.outputs.tri_tag }}
+        run: |
+          sudo apt-get install -y -qq webp > /dev/null
+          T=$(mktemp -d)
+          gh release download "$ZOO_TAG" --repo "$ZOO_REPO" --pattern 'screenshot-*.png' --dir "$T/tierpark" \
+            || echo "::warning::Tierpark: keine Bildschirmfotos im Release $ZOO_TAG"
+          gh release download "$TRI_TAG" --repo "$TRIBORA_REPO" --pattern 'bild-*.png' --pattern 'app-symbol-512.png' --dir "$T/tribora" \
+            || echo "::warning::Tribora: keine Bildschirmfotos im Release $TRI_TAG"
+          # Hochformat (Tierpark) auf 540 px Breite, Querformat (Tribora) auf 960 px – als WebP (klein, scharf)
+          for spec in tierpark:540 tribora:960; do
+            G=${spec%%:*}; W=${spec##*:}
+            mkdir -p "_site/screens/$G"
+            for f in "$T/$G"/*.png; do
+              [ -e "$f" ] || continue
+              case "$(basename "$f")" in app-symbol-*) continue;; esac
+              cwebp -quiet -q 80 -resize "$W" 0 "$f" -o "_site/screens/$G/$(basename "${f%.png}").webp"
+            done
+          done
+          # Tribora-App-Symbol immer aktuell aus dem Release übernehmen
+          [ -e "$T/tribora/app-symbol-512.png" ] && cp "$T/tribora/app-symbol-512.png" _site/assets/tribora/icon.png
+          du -sh _site/screens/* 2>/dev/null; ls _site/screens/* 2>/dev/null
+
       - uses: actions/upload-pages-artifact@v3
         if: steps.apps.outputs.skip != 'true'
         with:
