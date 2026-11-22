@@ -171,7 +171,7 @@ die Adresse einfügen – oder die neue Version einmal von Hand installieren.
 | Wann | Was |
 |---|---|
 | **Neue Spielversion** | Nichts. Die Website holt APK, Bilder und Versionsinfo selbst (stündlich bzw. bei jeder Website-Änderung). Eilt es: Repo Homepage → **Actions** → „Website veröffentlichen“ → **Run workflow**. |
-| **Lese-Schlüssel `GAMES_TOKEN` läuft ab** (Datum im Kalender!) | GitHub → Settings → Developer settings → Fine-grained tokens → **Regenerate** → neuen Text im Repo Homepage unter Settings → Secrets → Actions → `GAMES_TOKEN` → **Update** einfügen. Ohne gültigen Schlüssel kommen keine neuen Versionen mehr auf die Website (die alten bleiben). |
+| **Lese-Schlüssel `GAMES_TOKEN` läuft ab** – aktuell ca. **20.02.2027** (90 Tage; Erinnerung am 06.02.2027 ist gesetzt) | GitHub → Settings → Developer settings → Fine-grained tokens → **Regenerate** → neuen Text im Repo Homepage unter Settings → Secrets → Actions → `GAMES_TOKEN` → **Update** einfügen. Ohne gültigen Schlüssel kommen keine neuen Versionen mehr auf die Website (die alten bleiben). |
 | **Roter Lauf unter Actions** | Meist ein kurzer GitHub-Aussetzer → „Re-run jobs“. Sonst Claude das Protokoll ansehen lassen. |
 | **60 Tage keine Änderung im Repo** | GitHub pausiert die stündliche Prüfung → unter **Actions** „Enable workflow“ drücken. |
 | **Jährlich (November)** | OVH verlängert die Domain automatisch (ca. 21,49 €) – Zahlungsmittel aktuell halten. |
