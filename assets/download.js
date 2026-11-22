@@ -18,8 +18,12 @@
         var d = new Date(j.date + 'T12:00:00');
         html += (de ? ' vom ' : ' from ') + d.toLocaleDateString(de ? 'de-AT' : 'en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
       }
-      if (Array.isArray(j.notes) && j.notes.length) {
-        html += '<br>' + (de ? 'Neu:' : 'New:') + '<ul>' + j.notes.slice(0, 8).map(function (n) { return '<li>' + esc(n) + '</li>'; }).join('') + '</ul>';
+      // Englische Seite: englische Neuerungen nehmen, falls vorhanden (notes_en / title_en)
+      var notes = (!de && Array.isArray(j.notes_en) && j.notes_en.length) ? j.notes_en : j.notes;
+      var title = (!de && j.title_en) ? j.title_en : j.title;
+      if (title) html += '<br><b>' + esc(title) + '</b>';
+      if (Array.isArray(notes) && notes.length) {
+        html += '<br>' + (de ? 'Neu:' : 'New:') + '<ul>' + notes.slice(0, 8).map(function (n) { return '<li>' + esc(n) + '</li>'; }).join('') + '</ul>';
       }
       info.innerHTML = html;
     } catch (e) {
