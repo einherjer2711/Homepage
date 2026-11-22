@@ -1,0 +1,131 @@
+# Veröffentlicht die Website auf GitHub Pages – und legt dabei automatisch die neuesten
+# Spiele-Apps aus den Releases der Spiele-Repos dazu:
+#   Tierpark (zoo-game)      → download/tierpark/Tierpark.apk + version.json
+#   Tribora  (epochen-game)  → download/tribora/Tribora.apk   + version.json (wird hier erzeugt)
+#
+# Wann läuft das?
+#   • bei jeder Änderung auf "main"
+#   • per Knopf: Actions → "Website veröffentlichen" → Run workflow
+#   • jede Stunde: prüft, ob es eine neue App-Version gibt (sonst passiert nichts)
+#
+# Benötigtes Secret (Settings → Secrets and variables → Actions):
+#   GAMES_TOKEN – Fine-grained Token, NUR für zoo-game + epochen-game, NUR "Contents: Read-only".
+#   Fehlt es, wird die Website trotzdem veröffentlicht – nur ohne App-Downloads.
+#
+# Sicherheit: Eine APK wird nur übernommen, wenn sie mit DEINEM jeweiligen App-Schlüssel signiert ist.
+# Die APKs landen nie im Repo, sondern nur in der veröffentlichten Website.
+name: Website veröffentlichen
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '17 * * * *'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  ZOO_REPO: einherjer2711/zoo-game
+  TRIBORA_REPO: einherjer2711/epochen-game
+  # Fingerabdrücke der App-Schlüssel (öffentlich, kein Geheimnis) – dieselben wie in den Spiele-Repos
+  ZOO_KEY_SHA256: BD2D41872FA879A3C297350F5BEEF6ECE680C36CFEDF7BF5FBF6A6F07A230036
+  TRIBORA_KEY_SHA256: 46D5C6E00646D0B98590B494520DF0EF67F4518AC82CBF8BE3097D923425A7DE
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/configure-pages@v5
+        id: pages
+
+      - name: Neueste App-Versionen suchen
+        id: apps
+        env:
+          GH_TOKEN: ${{ secrets.GAMES_TOKEN }}
+          SITE: ${{ steps.pages.outputs.base_url }}
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::warning::Secret GAMES_TOKEN fehlt – die Website wird ohne App-Downloads veröffentlicht."
+            echo "have=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          live() { curl -fsSL "$SITE/download/$1/version.json?t=$(date +%s)" 2>/dev/null | jq -r '.versionName // empty' 2>/dev/null || true; }
+          ZOO_TAG=$(gh release view --repo "$ZOO_REPO" --json tagName -q .tagName)
+          TRI_TAG=$(gh release view --repo "$TRIBORA_REPO" --json tagName -q .tagName)
+          ZOO_LIVE=$(live tierpark); TRI_LIVE=$(live tribora)
+          echo "Tierpark: neueste $ZOO_TAG · auf der Website ${ZOO_LIVE:-keine}"
+          echo "Tribora:  neueste $TRI_TAG · auf der Website ${TRI_LIVE:-keine}"
+          {
+            echo "have=true"; echo "zoo_tag=$ZOO_TAG"; echo "tri_tag=$TRI_TAG"
+          } >> "$GITHUB_OUTPUT"
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "v$ZOO_LIVE" = "$ZOO_TAG" ] && [ "v$TRI_LIVE" = "$TRI_TAG" ]; then
+            echo "Nichts Neues – Website bleibt, wie sie ist."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Website zusammenstellen
+        if: steps.apps.outputs.skip != 'true'
+        run: |
+          mkdir _site
+          # alles außer Anleitungen (.md), Git- und Workflow-Dateien
+          rsync -a --exclude '.git*' --exclude '_site' --exclude '*.md' ./ _site/
+
+      - name: Tierpark holen und prüfen
+        if: steps.apps.outputs.skip != 'true' && steps.apps.outputs.have == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GAMES_TOKEN }}
+          TAG: ${{ steps.apps.outputs.zoo_tag }}
+        run: |
+          D=_site/download/tierpark
+          mkdir -p "$D"
+          gh release download "$TAG" --repo "$ZOO_REPO" --pattern 'Tierpark.apk' --pattern 'version.json' --dir "$D"
+          # version.json muss gültig sein und zur Release passen
+          jq -e '(.versionCode|type=="number") and (.apk=="Tierpark.apk")' "$D/version.json" > /dev/null \
+            || { echo "::error::Tierpark: version.json ist ungültig."; exit 1; }
+          [ "v$(jq -r .versionName "$D/version.json")" = "$TAG" ] \
+            || { echo "::error::Tierpark: version.json passt nicht zu $TAG."; exit 1; }
+          bash .github/scripts/signatur-pruefen.sh "$D/Tierpark.apk" "$ZOO_KEY_SHA256"
+
+      - name: Tribora holen und prüfen
+        if: steps.apps.outputs.skip != 'true' && steps.apps.outputs.have == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GAMES_TOKEN }}
+          TAG: ${{ steps.apps.outputs.tri_tag }}
+        run: |
+          D=_site/download/tribora
+          mkdir -p "$D"
+          gh release download "$TAG" --repo "$TRIBORA_REPO" --pattern 'Tribora.apk' --dir "$D"
+          bash .github/scripts/signatur-pruefen.sh "$D/Tribora.apk" "$TRIBORA_KEY_SHA256"
+          # Tribora liefert keine version.json mit – hier aus den Release-Daten erzeugen
+          INFO=$(gh release view "$TAG" --repo "$TRIBORA_REPO" --json tagName,publishedAt,body)
+          echo "$INFO" | jq '{
+              versionName: (.tagName | ltrimstr("v")),
+              apk: "Tribora.apk",
+              date: (.publishedAt[0:10]),
+              notes: [ .body | (capture("Änderung: (?<n>[^\n]+)") | .n)? ]
+            }' > "$D/version.json"
+          cat "$D/version.json"
+
+      - uses: actions/upload-pages-artifact@v3
+        if: steps.apps.outputs.skip != 'true'
+        with:
+          path: _site
+
+      - name: Veröffentlichen
+        if: steps.apps.outputs.skip != 'true'
+        id: deployment
+        uses: actions/deploy-pages@v4
