@@ -1,7 +1,7 @@
 # Veröffentlicht die Website auf GitHub Pages – und legt dabei automatisch die neuesten
 # Spiele-Apps aus den Releases der Spiele-Repos dazu:
 #   Tierpark (zoo-game)      → download/tierpark/Tierpark.apk + version.json
-#   Tribora  (epochen-game)  → download/tribora/Tribora.apk   + version.json (wird hier erzeugt)
+#   Tribora  (epochen-game)  → download/tribora/Tribora.apk   + version.json (aus dem Release; bei alten Releases hier erzeugt)
 #
 # Wann läuft das?
 #   • bei jeder Änderung auf "main"
@@ -110,7 +110,15 @@ jobs:
           mkdir -p "$D"
           gh release download "$TAG" --repo "$TRIBORA_REPO" --pattern 'Tribora.apk' --dir "$D"
           bash .github/scripts/signatur-pruefen.sh "$D/Tribora.apk" "$TRIBORA_KEY_SHA256"
-          # Tribora liefert keine version.json mit – hier aus den Release-Daten erzeugen
+          # Liefert das Release eine version.json (nötig für den Update-Check in der App), wird sie geprüft und übernommen.
+          if gh release download "$TAG" --repo "$TRIBORA_REPO" --pattern 'version.json' --dir "$D" 2>/dev/null; then
+            jq -e '(.versionCode|type=="number") and (.apk=="Tribora.apk")' "$D/version.json" > /dev/null \
+              || { echo "::error::Tribora: version.json ist ungültig."; exit 1; }
+            [ "v$(jq -r .versionName "$D/version.json")" = "$TAG" ] \
+              || { echo "::error::Tribora: version.json passt nicht zu $TAG."; exit 1; }
+            cat "$D/version.json"; exit 0
+          fi
+          # Ältere Releases ohne version.json: aus den Release-Daten erzeugen (nur für die Anzeige auf der Website)
           INFO=$(gh release view "$TAG" --repo "$TRIBORA_REPO" --json tagName,publishedAt,body)
           echo "$INFO" | jq '{
               versionName: (.tagName | ltrimstr("v")),
