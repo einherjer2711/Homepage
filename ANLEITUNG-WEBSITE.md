@@ -2,8 +2,24 @@
 
 Die Schritte sind so geschrieben, dass du sie der Reihe nach abhaken kannst.
 
-**Aufteilung:** Domain und E-Mail bei **domaintechnik.at**, die Website selbst auf **GitHub Pages** (gratis).
-Bei domaintechnik brauchst du dafür **kein Webspace-Paket** – Domain + DNS-Verwaltung (+ E-Mail, falls gewünscht) reicht.
+**Aufteilung:** Domain und E-Mail bei **OVHcloud** (bei .app ist ein Postfach „Starter E-Mail“ dabei),
+die Website selbst auf **GitHub Pages** (gratis). Ein Webhosting-Paket brauchst du **nicht**.
+
+---
+
+## Teil 0 – Domain bei OVHcloud bestellen
+
+Beim Bestellen von `pastfive.app` darauf achten:
+
+- [ ] **„Starter E-Mail“ inklusive** – im Warenkorb kontrollieren.
+- [ ] **Kein Webhosting** dazubuchen (wird evtl. angeboten – nicht nötig).
+- [ ] **Automatische Verlängerung EINGESCHALTET lassen.** Läuft die Domain aus, ist die Website weg und der
+      Tierpark findet seine Updates nicht mehr – im schlimmsten Fall schnappt sich jemand anderer die Adresse.
+- [ ] **Inhaber-Daten verbergen** (Datenschutz für die Domain-Daten / „Owo“), falls angeboten – dann steht deine
+      Anschrift nicht öffentlich im Domain-Verzeichnis.
+- [ ] Nach der Bestellung im OVH-Konto die **Zwei-Faktor-Anmeldung** einschalten (Code am Handy).
+
+Danach in der OVH-Verwaltung das Postfach `hallo@pastfive.app` anlegen (Bereich **E-Mails**).
 
 ---
 
@@ -35,14 +51,16 @@ oder Schlüssel – und die APK wird nicht ins Repo gelegt, sondern nur beim Ver
 
 ### 2b. DNS-Einträge beim Domain-Anbieter
 
-Bei domaintechnik.at im Kundenbereich die Domain auswählen und die **DNS-Verwaltung** öffnen
-(Bezeichnung kann leicht abweichen, z. B. „DNS-Einträge“ oder „Zoneneditor“). Dort:
+Im OVHcloud-Kundencenter: **Web Cloud** → **Domainnamen** → `pastfive.app` → Reiter **DNS-Zone**.
+Dort gibt es **„Eintrag hinzufügen“** sowie bei jedem Eintrag rechts ein Menü (…) zum **Bearbeiten/Löschen**.
+(Menünamen können sich leicht ändern.) Dort:
 
 1. **Alte Einträge entfernen**, die auf eine „Parkseite“ des Anbieters zeigen: alle **A**- und **AAAA**-Einträge
    für `@` (= die Domain selbst) sowie einen evtl. vorhandenen Eintrag für `www`.
-   ⚠️ **MX-Einträge und alles, was mit E-Mail zu tun hat (z. B. `mail`, `autodiscover`, SPF-TXT), NICHT löschen** –
-   die E-Mail bleibt bei domaintechnik.
-2. **Neu anlegen** (Name `@` bedeutet die Domain ohne Vorsatz; manche Anbieter lassen das Feld dafür leer):
+   ⚠️ **MX-Einträge und alles, was mit E-Mail zu tun hat (z. B. `mail`, `autodiscover`, SPF-TXT mit „v=spf1“),
+   NICHT löschen** – die E-Mail bleibt bei OVH.
+2. **Neu anlegen** (Name `@` bedeutet die Domain ohne Vorsatz – bei OVH heißt das Feld „Subdomain“ und bleibt
+   dafür **leer**; bei `www` steht dort `www`):
 
 | Typ   | Name  | Wert / Ziel                |
 |-------|-------|----------------------------|
@@ -54,7 +72,7 @@ Bei domaintechnik.at im Kundenbereich die Domain auswählen und die **DNS-Verwal
 | AAAA  | @     | `2606:50c0:8001::153`      |
 | AAAA  | @     | `2606:50c0:8002::153`      |
 | AAAA  | @     | `2606:50c0:8003::153`      |
-| CNAME | www   | `einherjer2711.github.io`  |
+| CNAME | www   | `einherjer2711.github.io.` (bei OVH mit Punkt am Ende) |
 | TXT   | `_github-pages-challenge-einherjer2711` | (Wert aus Schritt 2a) |
 
    „TTL“ kannst du auf dem Standardwert lassen.
@@ -75,9 +93,9 @@ Bei domaintechnik.at im Kundenbereich die Domain auswählen und die **DNS-Verwal
 ### Optional: E-Mail-Adresse mit der Domain
 
 Für Impressum und Google Play ist eine eigene Adresse wie `hallo@pastfive.app` praktisch (und schützt deine
-private Adresse). Das richtest du direkt bei domaintechnik ein – als eigenes Postfach oder als Weiterleitung an
-deine bestehende Adresse. Die E-Mail-Einträge legt domaintechnik dabei selbst an; sie vertragen sich mit den
-GitHub-Einträgen oben.
+private Adresse). Das Postfach ist bei OVH dabei (siehe Teil 0). Lesen und schreiben kannst du im Webmail von OVH
+oder in deinem gewohnten Mailprogramm; alternativ geht eine Weiterleitung an deine bestehende Adresse.
+Die E-Mail-Einträge legt OVH selbst an; sie vertragen sich mit den GitHub-Einträgen oben.
 
 ---
 

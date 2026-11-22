@@ -5,7 +5,7 @@ Der Besitzer ist kein Programmierer: immer **Deutsch**, einfach erklären, vor g
 
 ## Festgelegt
 - **Label:** pastfive (immer klein, zusammen) – ohne Gesicht/Namen. **Slogan:** „just play“ (auch auf der deutschen Seite).
-- **Domain:** pastfive.app (Domain + E-Mail bei domaintechnik.at, Website auf GitHub Pages).
+- **Domain:** pastfive.app (Domain + E-Mail bei OVHcloud inkl. „Starter E-Mail“, Auto-Verlängerung AN; Website auf GitHub Pages).
 - **Leitgedanke:** Spiele, die einfach Spiele sind – keine Werbung, keine Käufe im Spiel, keine Daten, offline.
   Gefühl: Pause, kein Druck, keine Pflicht. **Keine Kinderspiel-Seite** – ruhig, modern, erwachsen.
 - **Logo:** „Abendsonne“ Variante A (`assets/logo.svg`), Farben Orange #f2762e / #ffa24a, Dunkel #1f1b2e.

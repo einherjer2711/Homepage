@@ -4,7 +4,7 @@ Ideen und Aufgaben, die vorgemerkt sind, aber noch warten können.
 
 ## Offen
 
-1. **Domain sichern** – pastfive.app bei domaintechnik.at (Domain + E-Mail), danach DNS laut ANLEITUNG-WEBSITE.md.
+1. **Domain sichern** – pastfive.app bei OVHcloud (Domain + Starter E-Mail, Auto-Verlängerung an, 2FA), danach DNS laut ANLEITUNG-WEBSITE.md.
 2. **Impressum/Datenschutz ausfüllen** – Platzhalter für Name, Anschrift, E-Mail (rot markiert),
    am besten mit eigener Adresse wie `hallo@pastfive.app`.
 3. **Entstehungsnotiz beim Tierpark** – Vorschlag steht, bei Bedarf selbst anpassen.
