@@ -6,7 +6,7 @@
     "fingerabdruck": "BD:2D:41:87:2F:A8:79:A3:C2:97:35:0F:5B:EE:F6:EC:E6:80:C3:6C:FE:DF:7B:F5:FB:F6:A6:F0:7A:23:00:36",
     "bilder": "screenshot-*.png",
     "bildbreite": 540,
-    "symbol": false
+    "symbol": true
   },
   {
     "kurz": "tribora",
