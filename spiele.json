@@ -1,0 +1,20 @@
+[
+  {
+    "kurz": "tierpark",
+    "repo": "einherjer2711/zoo-game",
+    "apk": "Tierpark.apk",
+    "fingerabdruck": "BD:2D:41:87:2F:A8:79:A3:C2:97:35:0F:5B:EE:F6:EC:E6:80:C3:6C:FE:DF:7B:F5:FB:F6:A6:F0:7A:23:00:36",
+    "bilder": "screenshot-*.png",
+    "bildbreite": 540,
+    "symbol": false
+  },
+  {
+    "kurz": "tribora",
+    "repo": "einherjer2711/epochen-game",
+    "apk": "Tribora.apk",
+    "fingerabdruck": "46:D5:C6:E0:06:46:D0:B9:85:90:B4:94:52:0D:F0:EF:67:F4:51:8A:C8:2C:BF:8B:E3:09:7D:92:34:25:A7:DE",
+    "bilder": "bild-*.png",
+    "bildbreite": 960,
+    "symbol": true
+  }
+]

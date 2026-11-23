@@ -22,7 +22,8 @@ Einfache HTML-Seiten ohne Baukasten: Jede Seite ist eine eigene Datei und lässt
 | `assets/fonts/` | Schriften Outfit (Überschriften) und Manrope (Text), frei nutzbar |
 | `assets/tierpark/` | App-Symbol und (später) Screenshots |
 | `assets/download.js` | Zeigt beim Download-Knopf automatisch die aktuelle Version an |
-| `.github/workflows/pages.yml` | Veröffentlicht die Website automatisch bei jeder Änderung auf `main` |
+| `.github/workflows/pages.yml` | Veröffentlicht die Website automatisch (bei Änderungen, nach jedem Spiel-Release, stündlich als Reserve) |
+| `spiele.json` | **Liste aller Spiele** für die Automatik (Repo, APK-Name, Signatur-Fingerabdruck, Bilder). Neues Spiel = neuer Eintrag. |
 | `ANLEITUNG-WEBSITE.md` | **Schritt für Schritt: GitHub Pages, Domain, DNS, HTTPS** |
 | `WUNSCHLISTE.md` | Vorgemerkte Ideen für später |
 

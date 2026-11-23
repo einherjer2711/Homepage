@@ -1,7 +1,9 @@
 # Veröffentlicht die Website auf GitHub Pages – und legt dabei automatisch die neuesten
-# Spiele-Apps aus den Releases der Spiele-Repos dazu:
-#   Tierpark (zoo-game)      → download/tierpark/Tierpark.apk + version.json
-#   Tribora  (epochen-game)  → download/tribora/Tribora.apk   + version.json (aus dem Release; bei alten Releases hier erzeugt)
+# Spiele-Apps aus den Releases der Spiele-Repos dazu. WELCHE Spiele: steht in spiele.json
+# (ein Eintrag pro Spiel). Pro Spiel entsteht:
+#   download/<kurz>/<APK> + version.json   (Download + Update-Prüfung der App)
+#   screens/<kurz>/*.webp                   (Bildschirmfotos, verkleinert)
+#   assets/<kurz>/icon.png                  (App-Symbol, wenn "symbol": true)
 #
 # Wann läuft das?
 #   • bei jeder Änderung auf "main"
@@ -10,7 +12,7 @@
 #   • jede Stunde als Reserve: prüft, ob es eine neue App-Version gibt (sonst passiert nichts)
 #
 # Benötigtes Secret (Settings → Secrets and variables → Actions):
-#   GAMES_TOKEN – Fine-grained Token, NUR für zoo-game + epochen-game, NUR "Contents: Read-only".
+#   GAMES_TOKEN – Fine-grained Token, NUR für die Spiele-Repos aus spiele.json, NUR "Contents: Read-only".
 #   Fehlt es, wird die Website trotzdem veröffentlicht – nur ohne App-Downloads.
 #
 # Sicherheit: Eine APK wird nur übernommen, wenn sie mit DEINEM jeweiligen App-Schlüssel signiert ist.
@@ -33,17 +35,10 @@ concurrency:
   group: pages
   cancel-in-progress: false
 
-env:
-  ZOO_REPO: einherjer2711/zoo-game
-  TRIBORA_REPO: einherjer2711/epochen-game
-  # Fingerabdrücke der App-Schlüssel (öffentlich, kein Geheimnis) – dieselben wie in den Spiele-Repos
-  ZOO_KEY_SHA256: BD2D41872FA879A3C297350F5BEEF6ECE680C36CFEDF7BF5FBF6A6F07A230036
-  TRIBORA_KEY_SHA256: 46D5C6E00646D0B98590B494520DF0EF67F4518AC82CBF8BE3097D923425A7DE
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     environment:
       name: github-pages
       url: ${{ steps.deploy1.outputs.page_url || steps.deploy2.outputs.page_url }}
@@ -64,16 +59,17 @@ jobs:
             echo "have=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
-          live() { curl -fsSL "$SITE/download/$1/version.json?t=$(date +%s)" 2>/dev/null | jq -r '.versionName // empty' 2>/dev/null || true; }
-          ZOO_TAG=$(gh release view --repo "$ZOO_REPO" --json tagName -q .tagName)
-          TRI_TAG=$(gh release view --repo "$TRIBORA_REPO" --json tagName -q .tagName)
-          ZOO_LIVE=$(live tierpark); TRI_LIVE=$(live tribora)
-          echo "Tierpark: neueste $ZOO_TAG · auf der Website ${ZOO_LIVE:-keine}"
-          echo "Tribora:  neueste $TRI_TAG · auf der Website ${TRI_LIVE:-keine}"
-          {
-            echo "have=true"; echo "zoo_tag=$ZOO_TAG"; echo "tri_tag=$TRI_TAG"
-          } >> "$GITHUB_OUTPUT"
-          if [ "${{ github.event_name }}" = "schedule" ] && [ "v$ZOO_LIVE" = "$ZOO_TAG" ] && [ "v$TRI_LIVE" = "$TRI_TAG" ]; then
+          : > "$RUNNER_TEMP/tags.txt"; GLEICH=true
+          for i in $(seq 0 $(( $(jq length spiele.json) - 1 ))); do
+            KURZ=$(jq -r ".[$i].kurz" spiele.json); REPO=$(jq -r ".[$i].repo" spiele.json)
+            TAG=$(gh release view --repo "$REPO" --json tagName -q .tagName)
+            LIVE=$(curl -fsSL "$SITE/download/$KURZ/version.json?t=$(date +%s)" 2>/dev/null | jq -r '.versionName // empty' 2>/dev/null || true)
+            echo "$KURZ: neueste $TAG · auf der Website ${LIVE:-keine}"
+            echo "$KURZ $TAG" >> "$RUNNER_TEMP/tags.txt"
+            [ "v$LIVE" = "$TAG" ] || GLEICH=false
+          done
+          echo "have=true" >> "$GITHUB_OUTPUT"
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "$GLEICH" = true ]; then
             echo "Nichts Neues – Website bleibt, wie sie ist."
             echo "skip=true" >> "$GITHUB_OUTPUT"
           fi
@@ -82,81 +78,65 @@ jobs:
         if: steps.apps.outputs.skip != 'true'
         run: |
           mkdir _site
-          # alles außer Anleitungen (.md), Git- und Workflow-Dateien
-          rsync -a --exclude '.git*' --exclude '_site' --exclude '*.md' ./ _site/
+          # alles außer Anleitungen (.md), Git- und Workflow-Dateien und der Spiele-Liste
+          rsync -a --exclude '.git*' --exclude '_site' --exclude '*.md' --exclude 'spiele.json' ./ _site/
 
-      - name: Tierpark holen und prüfen
+      - name: Spiele holen und prüfen (APK, version.json)
         if: steps.apps.outputs.skip != 'true' && steps.apps.outputs.have == 'true'
         env:
           GH_TOKEN: ${{ secrets.GAMES_TOKEN }}
-          TAG: ${{ steps.apps.outputs.zoo_tag }}
         run: |
-          D=_site/download/tierpark
-          mkdir -p "$D"
-          gh release download "$TAG" --repo "$ZOO_REPO" --pattern 'Tierpark.apk' --pattern 'version.json' --dir "$D"
-          # version.json muss gültig sein und zur Release passen
-          jq -e '(.versionCode|type=="number") and (.apk=="Tierpark.apk")' "$D/version.json" > /dev/null \
-            || { echo "::error::Tierpark: version.json ist ungültig."; exit 1; }
-          [ "v$(jq -r .versionName "$D/version.json")" = "$TAG" ] \
-            || { echo "::error::Tierpark: version.json passt nicht zu $TAG."; exit 1; }
-          bash .github/scripts/signatur-pruefen.sh "$D/Tierpark.apk" "$ZOO_KEY_SHA256"
+          for i in $(seq 0 $(( $(jq length spiele.json) - 1 ))); do
+            KURZ=$(jq -r ".[$i].kurz" spiele.json); REPO=$(jq -r ".[$i].repo" spiele.json)
+            APK=$(jq -r ".[$i].apk" spiele.json); FP=$(jq -r ".[$i].fingerabdruck" spiele.json)
+            TAG=$(grep "^$KURZ " "$RUNNER_TEMP/tags.txt" | cut -d' ' -f2)
+            D=_site/download/$KURZ
+            echo "::group::$KURZ $TAG"
+            mkdir -p "$D"
+            gh release download "$TAG" --repo "$REPO" --pattern "$APK" --dir "$D"
+            # Nur APKs mit dem echten App-Schlüssel des Spiels werden veröffentlicht
+            bash .github/scripts/signatur-pruefen.sh "$D/$APK" "$FP"
+            if gh release download "$TAG" --repo "$REPO" --pattern 'version.json' --dir "$D" 2>/dev/null; then
+              jq -e --arg apk "$APK" '(.versionCode|type=="number") and (.apk==$apk)' "$D/version.json" > /dev/null \
+                || { echo "::error::$KURZ: version.json ist ungültig."; exit 1; }
+              [ "v$(jq -r .versionName "$D/version.json")" = "$TAG" ] \
+                || { echo "::error::$KURZ: version.json passt nicht zu $TAG."; exit 1; }
+            else
+              # Ältere Releases ohne version.json: nur für die Anzeige auf der Website erzeugen
+              gh release view "$TAG" --repo "$REPO" --json tagName,publishedAt,body | jq --arg apk "$APK" '{
+                  versionName: (.tagName | ltrimstr("v")), apk: $apk, date: (.publishedAt[0:10]),
+                  notes: [ .body | (capture("Änderung: (?<n>[^\n]+)") | .n)? ] }' > "$D/version.json"
+            fi
+            cat "$D/version.json"
+            echo "::endgroup::"
+          done
 
-      - name: Tribora holen und prüfen
-        if: steps.apps.outputs.skip != 'true' && steps.apps.outputs.have == 'true'
-        env:
-          GH_TOKEN: ${{ secrets.GAMES_TOKEN }}
-          TAG: ${{ steps.apps.outputs.tri_tag }}
-        run: |
-          D=_site/download/tribora
-          mkdir -p "$D"
-          gh release download "$TAG" --repo "$TRIBORA_REPO" --pattern 'Tribora.apk' --dir "$D"
-          bash .github/scripts/signatur-pruefen.sh "$D/Tribora.apk" "$TRIBORA_KEY_SHA256"
-          # Liefert das Release eine version.json (nötig für den Update-Check in der App), wird sie geprüft und übernommen.
-          if gh release download "$TAG" --repo "$TRIBORA_REPO" --pattern 'version.json' --dir "$D" 2>/dev/null; then
-            jq -e '(.versionCode|type=="number") and (.apk=="Tribora.apk")' "$D/version.json" > /dev/null \
-              || { echo "::error::Tribora: version.json ist ungültig."; exit 1; }
-            [ "v$(jq -r .versionName "$D/version.json")" = "$TAG" ] \
-              || { echo "::error::Tribora: version.json passt nicht zu $TAG."; exit 1; }
-            cat "$D/version.json"; exit 0
-          fi
-          # Ältere Releases ohne version.json: aus den Release-Daten erzeugen (nur für die Anzeige auf der Website)
-          INFO=$(gh release view "$TAG" --repo "$TRIBORA_REPO" --json tagName,publishedAt,body)
-          echo "$INFO" | jq '{
-              versionName: (.tagName | ltrimstr("v")),
-              apk: "Tribora.apk",
-              date: (.publishedAt[0:10]),
-              notes: [ .body | (capture("Änderung: (?<n>[^\n]+)") | .n)? ]
-            }' > "$D/version.json"
-          cat "$D/version.json"
-
-      - name: Bildschirmfotos holen und verkleinern
+      - name: Bildschirmfotos und App-Symbole holen
         # Bilder sind eine Zugabe: Fehlt etwas, wird die Website trotzdem veröffentlicht
         # (auf der Seite verschwinden dann nur die fehlenden Bilder).
         if: steps.apps.outputs.skip != 'true' && steps.apps.outputs.have == 'true'
         continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GAMES_TOKEN }}
-          ZOO_TAG: ${{ steps.apps.outputs.zoo_tag }}
-          TRI_TAG: ${{ steps.apps.outputs.tri_tag }}
         run: |
           sudo apt-get install -y -qq webp > /dev/null
           T=$(mktemp -d)
-          gh release download "$ZOO_TAG" --repo "$ZOO_REPO" --pattern 'screenshot-*.png' --dir "$T/tierpark" \
-            || echo "::warning::Tierpark: keine Bildschirmfotos im Release $ZOO_TAG"
-          gh release download "$TRI_TAG" --repo "$TRIBORA_REPO" --pattern 'bild-*.png' --pattern 'app-symbol-512.png' --dir "$T/tribora" \
-            || echo "::warning::Tribora: keine Bildschirmfotos im Release $TRI_TAG"
-          # Hochformat (Tierpark) auf 540 px Breite, Querformat (Tribora) auf 960 px – als WebP (klein, scharf)
-          for spec in tierpark:540 tribora:960; do
-            G=${spec%%:*}; W=${spec##*:}
-            mkdir -p "_site/screens/$G"
-            for f in "$T/$G"/*.png; do
+          for i in $(seq 0 $(( $(jq length spiele.json) - 1 ))); do
+            KURZ=$(jq -r ".[$i].kurz" spiele.json); REPO=$(jq -r ".[$i].repo" spiele.json)
+            MUSTER=$(jq -r ".[$i].bilder // \"bild-*.png\"" spiele.json); W=$(jq -r ".[$i].bildbreite // 540" spiele.json)
+            SYMBOL=$(jq -r ".[$i].symbol // true" spiele.json)
+            TAG=$(grep "^$KURZ " "$RUNNER_TEMP/tags.txt" | cut -d' ' -f2)
+            mkdir -p "$T/$KURZ" "_site/screens/$KURZ"
+            gh release download "$TAG" --repo "$REPO" --pattern "$MUSTER" --dir "$T/$KURZ" \
+              || echo "::warning::$KURZ: keine Bildschirmfotos im Release $TAG"
+            for f in "$T/$KURZ"/*.png; do
               [ -e "$f" ] || continue
-              case "$(basename "$f")" in app-symbol-*) continue;; esac
-              cwebp -quiet -q 80 -resize "$W" 0 "$f" -o "_site/screens/$G/$(basename "${f%.png}").webp"
+              cwebp -quiet -q 80 -resize "$W" 0 "$f" -o "_site/screens/$KURZ/$(basename "${f%.png}").webp"
             done
+            if [ "$SYMBOL" = "true" ] && gh release download "$TAG" --repo "$REPO" --pattern 'app-symbol-512.png' --dir "$T/$KURZ-symbol" 2>/dev/null; then
+              mkdir -p "_site/assets/$KURZ"; cp "$T/$KURZ-symbol/app-symbol-512.png" "_site/assets/$KURZ/icon.png"
+            fi
           done
-          # Tribora-App-Symbol immer aktuell aus dem Release übernehmen
-          [ -e "$T/tribora/app-symbol-512.png" ] && cp "$T/tribora/app-symbol-512.png" _site/assets/tribora/icon.png
           du -sh _site/screens/* 2>/dev/null; ls _site/screens/* 2>/dev/null
 
       - uses: actions/upload-pages-artifact@v3
