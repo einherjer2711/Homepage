@@ -18,4 +18,6 @@ Der Besitzer ist kein Programmierer: immer **Deutsch**, einfach erklären, vor g
   nur Lesen), prüft die Signatur, veröffentlicht unter `download/tierpark/` und `download/tribora/`;
   Bildschirmfotos kommen ebenfalls aus den Releases (`screens/…`, als WebP verkleinert).
   Diese Adressen nie ändern – die Tierpark-App nutzt `download/tierpark/version.json` für den Update-Check.
+- **Spiele-Liste:** `spiele.json` (ein Eintrag pro Spiel) – der Ablauf liest daraus Repo, APK, Fingerabdruck, Bilder.
+- **Neues Spiel:** entsteht aus dem Repo `spiel-vorlage` (Anleitung dort: `ANLEITUNG-NEUES-SPIEL.md`, Teil „Website“).
 - **Tagebuch/Neuigkeiten-Seite:** vorerst bewusst weggelassen.
