@@ -16,5 +16,14 @@
     "bilder": "bild-*.png",
     "bildbreite": 960,
     "symbol": true
+  },
+  {
+    "kurz": "minispiele",
+    "repo": "einherjer2711/Minispiele",
+    "apk": "Minispiele.apk",
+    "fingerabdruck": "87:81:F5:B7:7D:2A:94:4E:0A:64:13:30:15:82:33:05:69:70:9E:BC:98:49:BF:4C:46:61:E4:96:FF:01:6E:57",
+    "bilder": "bild-*.png",
+    "bildbreite": 540,
+    "symbol": true
   }
 ]
