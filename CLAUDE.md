@@ -20,5 +20,8 @@ Der Besitzer ist kein Programmierer: immer **Deutsch**, einfach erklären, vor g
   Bildschirmfotos kommen ebenfalls aus den Releases (`screens/…`, als WebP verkleinert).
   Diese Adressen nie ändern – die Tierpark-App nutzt `download/tierpark/version.json` für den Update-Check.
 - **Spiele-Liste:** `spiele.json` (ein Eintrag pro Spiel) – der Ablauf liest daraus Repo, APK, Fingerabdruck, Bilder.
+- **iPhone:** Spiele mit `"webapp": true` laufen zusätzlich im Browser unter `pastfive.app/<kurz>/spielen/`
+  (Paket `Web-App.zip` aus dem Spiel-Release; Spielerinnen und Spieler legen es am iPhone auf den Home-Bildschirm).
+  Kein App Store. Derzeit: Minispiele. Adresse nie ändern (Spielstand und Offline-Speicher hängen daran).
 - **Neues Spiel:** entsteht aus dem Repo `spiel-vorlage` (Anleitung dort: `ANLEITUNG-NEUES-SPIEL.md`, Teil „Website“).
 - **Tagebuch/Neuigkeiten-Seite:** vorerst bewusst weggelassen.

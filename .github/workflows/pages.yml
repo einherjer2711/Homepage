@@ -4,6 +4,7 @@
 #   download/<kurz>/<APK> + version.json   (Download + Update-Prüfung der App)
 #   screens/<kurz>/*.webp                   (Bildschirmfotos, verkleinert)
 #   assets/<kurz>/icon.png                  (App-Symbol, wenn "symbol": true)
+#   <kurz>/spielen/                         (iPhone-Version im Browser, wenn "webapp": true – aus Web-App.zip)
 #
 # Wann läuft das?
 #   • bei jeder Änderung auf "main"
@@ -138,6 +139,35 @@ jobs:
             fi
           done
           du -sh _site/screens/* 2>/dev/null; ls _site/screens/* 2>/dev/null
+
+      - name: iPhone-Versionen holen (Web-App → <kurz>/spielen/)
+        # Ebenfalls eine Zugabe: Fehlt sie, bleibt nur die iPhone-Seite weg, die Website erscheint trotzdem.
+        # Übernommen wird nur ein Paket mit genau den erwarteten Dateien und passender Versionsnummer.
+        if: steps.apps.outputs.skip != 'true' && steps.apps.outputs.have == 'true'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GAMES_TOKEN }}
+        run: |
+          T=$(mktemp -d)
+          ERWARTET="icon-180.png icon-192.png icon-512.png index.html manifest.webmanifest sw.js"
+          for i in $(seq 0 $(( $(jq length spiele.json) - 1 ))); do
+            [ "$(jq -r ".[$i].webapp // false" spiele.json)" = "true" ] || continue
+            KURZ=$(jq -r ".[$i].kurz" spiele.json); REPO=$(jq -r ".[$i].repo" spiele.json)
+            TAG=$(grep "^$KURZ " "$RUNNER_TEMP/tags.txt" | cut -d' ' -f2)
+            if ! gh release download "$TAG" --repo "$REPO" --pattern 'Web-App.zip' --dir "$T/$KURZ"; then
+              echo "::warning::$KURZ: keine Web-App.zip im Release $TAG – iPhone-Version fehlt diesmal."; continue
+            fi
+            LISTE=$(unzip -Z1 "$T/$KURZ/Web-App.zip" | sort | xargs)
+            if [ "$LISTE" != "$ERWARTET" ]; then
+              echo "::warning::$KURZ: Web-App.zip enthält unerwartete Dateien ($LISTE) – nicht übernommen."; continue
+            fi
+            Z="_site/$KURZ/spielen"; rm -rf "$Z"; mkdir -p "$Z"
+            unzip -q "$T/$KURZ/Web-App.zip" -d "$Z"
+            if ! grep -q "APP_VERSION = '${TAG#v}'" "$Z/index.html"; then
+              echo "::warning::$KURZ: Web-App passt nicht zu $TAG – nicht übernommen."; rm -rf "$Z"; continue
+            fi
+            echo "$KURZ: iPhone-Version $TAG unter /$KURZ/spielen/"
+          done
 
       - uses: actions/upload-pages-artifact@v3
         if: steps.apps.outputs.skip != 'true'
