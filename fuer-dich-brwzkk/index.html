@@ -38,10 +38,10 @@ body{margin:0;background:var(--night);color:var(--ivory);font-family:var(--body)
   -webkit-font-smoothing:antialiased;overflow-x:hidden;-webkit-tap-highlight-color:transparent}
 body:not(.lit){overflow:hidden;height:100svh}
 #sky{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
-.wrap{position:relative;z-index:1;padding-left:max(20px, env(safe-area-inset-left, 0px));padding-right:max(20px, env(safe-area-inset-right, 0px))}
+.wrap{position:relative;z-index:1;overflow-x:hidden;overflow-x:clip;padding-left:max(20px, env(safe-area-inset-left, 0px));padding-right:max(20px, env(safe-area-inset-right, 0px))}
 
 /* ---------- Erster Bildschirm ---------- */
-.hero{min-height:100svh;overflow:hidden;display:grid;place-items:center;text-align:center;padding-block:max(28px, env(safe-area-inset-top, 0px)) 40px;position:relative}
+.hero{min-height:100svh;display:grid;place-items:center;text-align:center;padding-block:max(28px, env(safe-area-inset-top, 0px)) 40px;position:relative}
 .hero-inner{display:grid;justify-items:center;gap:28px}
 .light-btn{appearance:none;border:0;background:none;padding:0;cursor:pointer;color:inherit;border-radius:24px;position:relative}
 .light-btn:focus-visible{outline:2px solid var(--gold);outline-offset:8px}
@@ -149,6 +149,9 @@ main[hidden]{display:none!important}
 .concert[hidden]{display:none!important}
 .concert h2{margin:0;font-family:var(--display);font-weight:600;font-size:clamp(2.3rem,10vw,3.4rem);line-height:1.02;text-wrap:balance;color:var(--ivory)}
 .concert h2 em{display:block;font-weight:500;color:var(--gold-hi)}
+.magic{margin:0;font-family:var(--display);font-style:italic;font-weight:500;font-size:clamp(1.7rem,7vw,2.2rem);line-height:1.25;color:var(--gold-hi);text-wrap:balance}
+.about.small{font-size:1.15rem;color:var(--ivory-dim)}
+.concert h2{margin-top:14px!important}
 .subtitle{margin:-10px 0 0;font-size:.76rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
 .facts{margin:0;display:grid;gap:0;text-align:left;border-top:1px solid rgba(228,182,108,.28)}
 .facts>div{display:grid;grid-template-columns:5.5rem 1fr;gap:14px;padding:15px 2px;border-bottom:1px solid rgba(228,182,108,.28)}
@@ -171,8 +174,8 @@ main[hidden]{display:none!important}
 .btn.ghost{border:1px solid rgba(228,182,108,.5);color:var(--gold-hi)}
 .btn:focus-visible{outline:2px solid var(--ivory);outline-offset:3px}
 .closing{padding-block:30px 10px;display:grid;gap:10px;justify-items:center}
-.closing p{margin:0;font-family:var(--display);font-style:italic;font-size:clamp(1.5rem,6vw,1.9rem);line-height:1.35;color:var(--ivory);text-wrap:balance}
-.closing .sig{font-size:1.25rem;color:var(--gold-hi)}
+.closing p{margin:0;font-family:var(--display);font-style:italic;font-size:clamp(1.3rem,5vw,1.5rem);line-height:1.45;color:var(--ivory);text-wrap:balance}
+.closing .sig{font-size:clamp(1.8rem,7.5vw,2.3rem);font-style:normal;font-weight:600;color:var(--gold-hi);margin-top:14px}
 .heart{width:26px;height:26px;color:var(--ribbon);margin-top:8px}
 .end{height:max(40px, env(safe-area-inset-bottom, 0px))}
 
@@ -227,7 +230,7 @@ main[hidden]{display:none!important}
         </div>
         <div class="greet" aria-live="polite">
           <div class="eyebrow">27. November</div>
-          <h1>Alles Liebe zum Geburtstag,<span class="name">Schatzilein</span></h1>
+          <h1>Alles Liebe zum Geburtstag,<span class="name">mein Schatz!</span></h1>
           <div class="cue"><span>Weiterlesen</span><i></i></div>
         </div>
       </div>
@@ -236,21 +239,21 @@ main[hidden]{display:none!important}
 
   <main id="rest" hidden>
     <section class="letter" aria-label="Brief">
-      <p class="reveal">Heute ist dein Tag. Und ich möchte ihn nutzen, um dir zu sagen, was ich viel zu selten laut ausspreche.</p>
-      <p class="reveal big">Ich bin so glücklich mit dir.<br>Und ich liebe dich über alles.</p>
-      <p class="reveal">Nach all den Jahren freue ich mich immer noch jeden Tag aufs Neue auf die Zeit mit dir. Mit dir ist jeder Tag etwas Besonderes, auch die ganz gewöhnlichen.</p>
+      <p class="reveal">Es gibt so vieles, was ich dir eigentlich viel öfter sagen sollte. Und heute ist ein schöner Anlass, das einmal nachzuholen.</p>
+      <p class="reveal big">Ich bin unglaublich glücklich mit dir.</p>
+      <p class="reveal">Und das Schönste daran ist, dass ich mich auch nach all den gemeinsamen Jahren noch immer jeden Tag darauf freue, Zeit mit dir zu verbringen. Ganz egal, ob wir etwas Besonderes unternehmen oder einfach nur gemeinsam auf der Couch sitzen.</p>
       <svg class="sprig reveal" viewBox="0 0 120 26" fill="none" aria-hidden="true"><path d="M10 13h100" stroke="#3f5e47" stroke-width="1.4" stroke-linecap="round"/><g stroke="#4f7458" stroke-width="1.3" stroke-linecap="round"><path d="M22 13l-6-6M22 13l-6 6M34 13l-6-7M34 13l-6 7M46 13l-6-7M46 13l-6 7M74 13l6-7M74 13l6 7M86 13l6-7M86 13l6 7M98 13l6-6M98 13l6 6"/></g><circle cx="60" cy="13" r="4.5" fill="#a32a31"/><circle cx="58.5" cy="11.5" r="1.3" fill="#e27b7f"/></svg>
-      <p class="reveal">Ich bin wahnsinnig stolz auf dich, und zwar in allen Bereichen. Ich bewundere, wie du deine Selbstständigkeit aufgebaut hast und sie so erfolgreich lebst.</p>
-      <p class="reveal">Und du bist wohl die beste Mama der Welt für unsere Maus. Auch wenn du manchmal daran zweifelst: Ich sehe es jeden Tag.</p>
-      <p class="reveal">Du bist mein Anker und mein Rückhalt. Du unterstützt mich immer, meisterst auch meine Phasen des Zweifelns mit Bravour, und bei dir fühle ich mich immer geliebt.</p>
-      <p class="reveal big">Danke, dass es dich gibt.</p>
+      <p class="reveal">Ich bin wahnsinnig stolz auf dich. Auf das, was du dir mit deiner Selbstständigkeit aufgebaut hast, auf deinen Mut und darauf, mit wie viel Herz du das alles machst.</p>
+      <p class="reveal">Und ich könnte mir keine bessere Mama für unsere Maus wünschen. Es ist schön zu sehen, mit wie viel Liebe du für sie da bist. Ich bin einfach unglaublich glücklich über die kleine Familie, die wir gemeinsam haben.</p>
+      <p class="reveal">Du bist mein Rückhalt, fängst mich auf, wenn ich wieder einmal zu viel nachdenke, und schaffst es, dass ich mich bei dir einfach wohl und geliebt fühle.</p>
+      <p class="reveal big">Ich hoffe, du weißt, wie viel du mir bedeutest und wie schön es für mich ist, dich an meiner Seite zu haben.</p>
     </section>
 
     <section class="gift" aria-label="Geschenk">
-      <p class="lead reveal">Und weil es schon viel zu lange her ist, dass ich dir einfach so eine Kleinigkeit geschenkt habe&nbsp;…</p>
+      <p class="lead reveal">Und weil die schönsten Geschenke oft jene sind, von denen gemeinsame Erinnerungen bleiben, möchte ich dir zu deinem Geburtstag etwas schenken, auf das wir uns alle drei freuen&nbsp;können&nbsp;…</p>
       <button class="envelope reveal" id="envelope" type="button" aria-label="Kuvert öffnen">
         <span class="e-back"></span>
-        <span class="e-letter"><small>Eine Einladung</small><b>für einen Abend</b><b>bei Kerzenschein</b></span>
+        <span class="e-letter"><small>Ein bisschen</small><b>Weihnachtszauber</b><b>für uns drei</b></span>
         <span class="e-front"></span>
         <span class="e-flap"></span>
         <span class="seal" aria-hidden="true">♥</span>
@@ -260,7 +263,9 @@ main[hidden]{display:none!important}
 
     <section class="concert" id="concert" hidden aria-label="Dein Geschenk">
       <div class="eyebrow" style="margin:0">Dein Geschenk</div>
-      <h2>Wir gehen zum <em>Candlelight Concert</em></h2>
+      <p class="magic">Ein bisschen Weihnachtszauber für uns drei.</p>
+      <p class="about">Kerzenschein, weihnachtliche Musik und ein gemeinsamer Ausflug, bei dem wir den Alltag für ein paar Stunden hinter uns lassen und einfach die schöne Vorweihnachtszeit genießen können.</p>
+      <h2>Candlelight Concert <em>Christmas Edition</em></h2>
       <p class="subtitle">Weihnachtsklassiker in Salzburg</p>
 
       <dl class="facts">
@@ -269,7 +274,7 @@ main[hidden]{display:none!important}
         <div><dt>Musik</dt><dd>Constanze Streichquartett<small>eine Stunde live, nur im Licht von Hunderten Kerzen</small></dd></div>
       </dl>
 
-      <p class="about">Weihnachtsklassiker, Filmmusik und Popsongs, gespielt von Streichern: Tschaikowskis Zuckerfee, Carol of the Bells, O Holy Night, Let It Go … und Greensleeves, die Melodie, die du hier gerade hörst.</p>
+      <p class="about small">Weihnachtsklassiker, Filmmusik und Popsongs, gespielt von Streichern: Tschaikowskis Zuckerfee, Carol of the Bells, O Holy Night, Let It Go … und Greensleeves, die Melodie, die du hier gerade hörst.</p>
 
       <div class="count" aria-live="off">
         <div class="count-lbl" id="countLbl">Noch</div>
@@ -294,8 +299,8 @@ main[hidden]{display:none!important}
       </div>
 
       <div class="closing">
-        <p>Ich freue mich so auf diesen Abend mit dir.</p>
-        <p class="sig">In Liebe, für immer dein</p>
+        <p>Ich freue mich schon sehr darauf. Aber noch viel mehr freue ich mich auf all die kleinen und großen Momente, die wir in unserem gemeinsamen Leben noch erleben dürfen.</p>
+        <p class="sig">Ich liebe dich über alles!</p>
         <svg class="heart" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 21s-8-5.2-8-11a4.6 4.6 0 0 1 8-3.1A4.6 4.6 0 0 1 20 10c0 5.8-8 11-8 11z"/></svg>
       </div>
     </section>
@@ -475,7 +480,7 @@ env.addEventListener('click', function(){
   burst(r.left + r.width/2, r.top + r.height*0.2);
   setTimeout(function(){
     concert.hidden = false; tick();
-    concert.querySelectorAll('.eyebrow, h2, .subtitle, .facts, .about, .count, .actions, .closing').forEach(function(el){ el.classList.add('reveal'); });
+    concert.querySelectorAll('.eyebrow, .magic, h2, .subtitle, .facts, .about, .count, .actions, .closing').forEach(function(el){ el.classList.add('reveal'); });
     observeReveals();
     concert.scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block:'start'});
   }, 1700);
