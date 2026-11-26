@@ -1,0 +1,20 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//fuer-dich//DE
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:candlelight-2026-12-22@fuer-dich
+DTSTAMP:20261126T120000Z
+DTSTART:20261222T183000Z
+DTEND:20261222T201500Z
+SUMMARY:Candlelight: Weihnachtsklassiker ♥
+LOCATION:Große Universitätsaula\, Hofstallgasse 2-4\, 5020 Salzburg
+DESCRIPTION:Einlass ab 19:30 Uhr\, Beginn 20:15 Uhr. Constanze Streichquartett. Früh da sein – Plätze nach Ankunft!
+BEGIN:VALARM
+TRIGGER:-PT3H
+ACTION:DISPLAY
+DESCRIPTION:Heute Abend: Candlelight Concert ♥
+END:VALARM
+END:VEVENT
+END:VCALENDAR
