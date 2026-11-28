@@ -13,7 +13,7 @@ Der Besitzer ist kein Programmierer: immer **Deutsch**, einfach erklären, vor g
 - **Pro Spiel:** Entstehungsnotiz, **Ehrlich-Etikett** (muss immer stimmen!), Screenshots, Download, Anleitung.
 - **Spiele:** Tierpark Sonnenhügel (`zoo-game`, ab 6, DE/EN, Update-Check) und Tribora (`epochen-game`, ab 12,
   DE/EN, Update-Check seit 1.19) und Minispiele (`Minispiele`, 22 Minispiele, ab 8, DE/EN, Hochformat).
-  Alle Android 7+, alle Internet nur für die Update-Prüfung. Minispiele zusätzlich fürs iPhone (iOS 16+, im Browser).
+  Alle Android 7+, alle Internet nur für die Update-Prüfung. Alle drei zusätzlich fürs iPhone (iOS 16+, im Browser).
 - **Automatik:** `.github/workflows/pages.yml` wird von den Spiele-Releases angestoßen (Secret `HOMEPAGE_TOKEN` in
   den Spiele-Repos; Stunden-Uhr nur Reserve, springt nicht zuverlässig an) und holt die neuesten APKs (Secret `GAMES_TOKEN`,
   nur Lesen), prüft die Signatur, veröffentlicht unter `download/tierpark/` und `download/tribora/`;
