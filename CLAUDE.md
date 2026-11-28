@@ -12,7 +12,7 @@ Der Besitzer ist kein Programmierer: immer **Deutsch**, einfach erklären, vor g
 - **Schriften:** Outfit (Überschriften), Manrope (Text), lokal in `assets/fonts/` (kein Google-Server).
 - **Pro Spiel:** Entstehungsnotiz, **Ehrlich-Etikett** (muss immer stimmen!), Screenshots, Download, Anleitung.
 - **Spiele:** Tierpark Sonnenhügel (`zoo-game`, ab 6, DE/EN, Update-Check) und Tribora (`epochen-game`, ab 12,
-  DE/EN, Update-Check seit 1.19) und Minispiele (`Minispiele`, 20 Minispiele, ab 8, DE/EN, Hochformat).
+  DE/EN, Update-Check seit 1.19) und Minispiele (`Minispiele`, 22 Minispiele, ab 8, DE/EN, Hochformat).
   Alle Android 7+, alle Internet nur für die Update-Prüfung.
 - **Automatik:** `.github/workflows/pages.yml` wird von den Spiele-Releases angestoßen (Secret `HOMEPAGE_TOKEN` in
   den Spiele-Repos; Stunden-Uhr nur Reserve, springt nicht zuverlässig an) und holt die neuesten APKs (Secret `GAMES_TOKEN`,
